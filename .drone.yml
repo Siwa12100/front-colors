@@ -48,10 +48,11 @@ steps:
           exit 1;
         }
       - echo "🔍 [DEBUG] Copie du rapport de couverture..."
-      - cp -r coverage/* /coverage/
+      - cp -r coverage/colors/* /coverage/     # 👈 on entre dans le sous-dossier
       - echo "🔍 [DEBUG] Contenu de /coverage/ :"
       - ls -la /coverage/
       - echo "✅ [SUCCESS] Tests terminés avec couverture."
+
 
   # ── Étape 2 : Sonar + Build Docker en parallèle ───────────
   - name: "📊 analyse-sonar"
