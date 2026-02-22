@@ -73,7 +73,7 @@ volumes:
 
 steps:
   - name: "📊 analyse-sonar"
-    image: node:22-alpine
+    image: sonarsource/sonar-scanner-cli:latest
     environment:
       SONAR_HOST_URL: https://sonar.davalada.valorium-mc.fr
       SONAR_TOKEN:
@@ -83,13 +83,12 @@ steps:
         path: /coverage
     commands:
       - echo "📊 [INFO] Initialisation de l'analyse Sonar..."
-      - npm ci
       - echo "🔍 [DEBUG] Vérification du rapport de couverture..."
       - ls /coverage/
-      - npx sonar-scanner
+      - sonar-scanner
           -Dsonar.projectKey=colors-main
           -Dsonar.host.url=$SONAR_HOST_URL
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.token=$SONAR_TOKEN
           -Dsonar.sources=src
           -Dsonar.tests=tests
           -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info || {
@@ -97,6 +96,7 @@ steps:
           exit 1;
         }
       - echo "✅ [SUCCESS] Analyse Sonar terminée."
+
 
   - name: "🐳 build-push-img-main"
     image: plugins/docker
