@@ -50,7 +50,6 @@ steps:
       - cp -r coverage/ /coverage/
       - echo "✅ [SUCCESS] Tests terminés avec couverture."
 
-
 # ============================================================
 # PIPELINE MAIN : Sonar + Docker + Deploy
 # ============================================================
