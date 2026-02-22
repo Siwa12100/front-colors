@@ -1,6 +1,3 @@
-# ============================================================
-# PIPELINE UNIQUE : Build + Tests + Sonar + Docker + Deploy
-# ============================================================
 kind: pipeline
 type: docker
 name: ci-main
@@ -16,7 +13,6 @@ volumes:
     temp: {}
 
 steps:
-  # ── Étape 1 : Build + Tests en parallèle ──────────────────
   - name: "🛠 build"
     image: node:22-alpine
     commands:
@@ -53,9 +49,6 @@ steps:
       - ls -la /coverage/
       - echo "✅ [SUCCESS] Tests terminés avec couverture."
 
-
-
-  # ── Étape 2 : Sonar + Build Docker en parallèle ───────────
   - name: "📊 analyse-sonar"
     image: sonarsource/sonar-scanner-cli:latest
     depends_on:
@@ -100,7 +93,6 @@ steps:
       tags:
         - latest
 
-  # ── Étape 3 : Deploy (dépend du build Docker) ─────────────
   - name: "🚀 deploiement-vps-main"
     image: appleboy/drone-ssh
     depends_on:
