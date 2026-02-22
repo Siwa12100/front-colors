@@ -1,9 +1,9 @@
 # ============================================================
-# PIPELINE COMMUNE : Build + Tests (main)
+# PIPELINE MAIN : Build + Tests + Sonar + Docker + Deploy
 # ============================================================
 kind: pipeline
 type: docker
-name: build-and-test
+name: main
 
 trigger:
   branch:
@@ -47,34 +47,11 @@ steps:
           exit 1;
         }
       - echo "🔍 [DEBUG] Copie du rapport de couverture..."
-      - cp -r coverage/* /coverage/     # 👈 /* au lieu de coverage/
+      - cp -r coverage/* /coverage/
       - echo "🔍 [DEBUG] Contenu de /coverage/ :"
       - ls -la /coverage/
       - echo "✅ [SUCCESS] Tests terminés avec couverture."
 
-
-# ============================================================
-# PIPELINE MAIN : Sonar + Docker + Deploy
-# ============================================================
----
-kind: pipeline
-type: docker
-name: deploy-main
-
-trigger:
-  branch:
-    - main
-  event:
-    - push
-
-depends_on:
-  - build-and-test
-
-volumes:
-  - name: shared-volume
-    temp: {}
-
-steps:
   - name: "📊 analyse-sonar"
     image: sonarsource/sonar-scanner-cli:latest
     environment:
@@ -87,7 +64,7 @@ steps:
     commands:
       - echo "📊 [INFO] Initialisation de l'analyse Sonar..."
       - echo "🔍 [DEBUG] Vérification du rapport de couverture..."
-      - ls /coverage/
+      - ls -la /coverage/
       - mkdir -p /tmp/scannerwork
       - sonar-scanner
           -Dsonar.projectKey=colors-main
@@ -101,8 +78,6 @@ steps:
           exit 1;
         }
       - echo "✅ [SUCCESS] Analyse Sonar terminée."
-
-
 
   - name: "🐳 build-push-img-main"
     image: plugins/docker
