@@ -1,0 +1,139 @@
+# ============================================================
+# PIPELINE COMMUNE : Build + Tests (main)
+# ============================================================
+kind: pipeline
+type: docker
+name: build-and-test
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
+
+volumes:
+  - name: shared-volume
+    temp: {}
+
+steps:
+  - name: "🛠 build"
+    image: node:22-alpine
+    commands:
+      - echo "🛠 [INFO] Build du projet Colors..."
+      - npm ci || {
+          echo "❌ [ERROR] L'installation des dépendances a échoué.";
+          exit 1;
+        }
+      - npx ng build --configuration production || {
+          echo "❌ [ERROR] Le build a échoué.";
+          exit 1;
+        }
+      - echo "✅ [SUCCESS] Build terminé avec succès."
+
+  - name: "🧪 tests-unitaires"
+    image: node:22-alpine
+    environment:
+      API_BASE_URL:
+        from_secret: API_BASE_URL
+    volumes:
+      - name: shared-volume
+        path: /coverage
+    commands:
+      - echo "🧪 [INFO] Installation des dépendances..."
+      - npm ci
+      - echo "🧪 [INFO] Lancement des tests avec couverture..."
+      - npx ng test --no-watch --code-coverage --browsers=ChromeHeadless || {
+          echo "❌ [ERROR] Les tests ont échoué.";
+          exit 1;
+        }
+      - echo "🔍 [DEBUG] Copie du rapport de couverture..."
+      - cp -r coverage/ /coverage/
+      - echo "✅ [SUCCESS] Tests terminés avec couverture."
+
+# ============================================================
+# PIPELINE MAIN : Sonar + Docker + Deploy
+# ============================================================
+---
+kind: pipeline
+type: docker
+name: deploy-main
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
+
+depends_on:
+  - build-and-test
+
+volumes:
+  - name: shared-volume
+    temp: {}
+
+steps:
+  - name: "📊 analyse-sonar"
+    image: node:22-alpine
+    environment:
+      SONAR_HOST_URL: https://sonar.davalada.valorium-mc.fr
+      SONAR_TOKEN:
+        from_secret: SONAR_TOKEN
+    volumes:
+      - name: shared-volume
+        path: /coverage
+    commands:
+      - echo "📊 [INFO] Initialisation de l'analyse Sonar..."
+      - npm ci
+      - echo "🔍 [DEBUG] Vérification du rapport de couverture..."
+      - ls /coverage/
+      - npx sonar-scanner
+          -Dsonar.projectKey=colors-main
+          -Dsonar.host.url=$SONAR_HOST_URL
+          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.sources=src
+          -Dsonar.tests=tests
+          -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info || {
+          echo "❌ [ERROR] L'analyse Sonar a échoué.";
+          exit 1;
+        }
+      - echo "✅ [SUCCESS] Analyse Sonar terminée."
+
+  - name: "🐳 build-push-img-main"
+    image: plugins/docker
+    settings:
+      registry: registry.davalada.valorium-mc.fr
+      repo: registry.davalada.valorium-mc.fr/colors-main
+      username:
+        from_secret: DOCKER_USERNAME
+      password:
+        from_secret: DOCKER_PASSWORD
+      dockerfile: Dockerfile
+      tags:
+        - latest
+
+  - name: "🚀 deploiement-vps-main"
+    image: appleboy/drone-ssh
+    depends_on:
+      - "🐳 build-push-img-main"
+    settings:
+      host: ecirada.valorium-mc.fr
+      username:
+        from_secret: SSH_USER
+      ssh_key:
+        from_secret: SSH_PRIVATE_KEY
+      port: 22
+      script:
+        - echo "🚀 [INFO] Déploiement de Colors (main) en cours..."
+        - cd deploiements/colors-main
+        - echo "🛑 [INFO] Arrêt de l'ancien service..."
+        - docker compose down
+        - echo "📥 [INFO] Pull de la dernière image depuis le registry..."
+        - docker compose pull
+        - echo "🚀 [INFO] Lancement du service..."
+        - docker compose up -d
+        - sleep 5
+        - docker ps | grep colors-main || {
+            echo "❌ [ERROR] Le service ne tourne pas !";
+            exit 1;
+          }
+        - echo "✅ [SUCCESS] Déploiement de Colors (main) terminé avec succès."
