@@ -71,7 +71,9 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "include": ["../tests/**/*.spec.ts", "../tests/**/*.test.ts"]
+            "include": ["../tests/**/*.spec.ts", "../tests/**/*.test.ts"],
+            "coverage": true,
+            "coverageReporters": ["lcov", "text"]
           }
         }
       }

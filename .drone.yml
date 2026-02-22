@@ -43,15 +43,16 @@ steps:
       - echo "🧪 [INFO] Installation des dépendances..."
       - npm ci
       - echo "🧪 [INFO] Lancement des tests avec couverture..."
-      - npx ng test --watch=false --coverage || {
+      - npx ng test --watch=false || {
           echo "❌ [ERROR] Les tests ont échoué.";
           exit 1;
         }
       - echo "🔍 [DEBUG] Copie du rapport de couverture..."
-      - cp -r coverage/colors/* /coverage/     # 👈 on entre dans le sous-dossier
+      - cp -r coverage/colors/* /coverage/
       - echo "🔍 [DEBUG] Contenu de /coverage/ :"
       - ls -la /coverage/
       - echo "✅ [SUCCESS] Tests terminés avec couverture."
+
 
 
   # ── Étape 2 : Sonar + Build Docker en parallèle ───────────
