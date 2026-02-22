@@ -47,8 +47,11 @@ steps:
           exit 1;
         }
       - echo "🔍 [DEBUG] Copie du rapport de couverture..."
-      - cp -r coverage/ /coverage/
+      - cp -r coverage/* /coverage/     # 👈 /* au lieu de coverage/
+      - echo "🔍 [DEBUG] Contenu de /coverage/ :"
+      - ls -la /coverage/
       - echo "✅ [SUCCESS] Tests terminés avec couverture."
+
 
 # ============================================================
 # PIPELINE MAIN : Sonar + Docker + Deploy
