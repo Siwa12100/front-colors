@@ -85,17 +85,20 @@ steps:
       - echo "📊 [INFO] Initialisation de l'analyse Sonar..."
       - echo "🔍 [DEBUG] Vérification du rapport de couverture..."
       - ls /coverage/
+      - mkdir -p /tmp/scannerwork
       - sonar-scanner
           -Dsonar.projectKey=colors-main
           -Dsonar.host.url=$SONAR_HOST_URL
           -Dsonar.token=$SONAR_TOKEN
           -Dsonar.sources=src
           -Dsonar.tests=tests
-          -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info || {
+          -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info
+          -Dsonar.working.directory=/tmp/scannerwork || {
           echo "❌ [ERROR] L'analyse Sonar a échoué.";
           exit 1;
         }
       - echo "✅ [SUCCESS] Analyse Sonar terminée."
+
 
 
   - name: "🐳 build-push-img-main"
