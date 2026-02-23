@@ -119,3 +119,4 @@ steps:
             exit 1;
           }
         - echo "✅ [SUCCESS] Déploiement de Colors (main) terminé avec succès."
+
