@@ -90,6 +90,8 @@ steps:
         from_secret: DOCKER_USERNAME
       password:
         from_secret: DOCKER_PASSWORD
+      build_args:
+        - API_BASE_URL=https://api.colors.valorium-mc.fr
       dockerfile: Dockerfile
       tags:
         - latest
