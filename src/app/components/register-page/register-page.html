@@ -1,0 +1,40 @@
+<div class="displayFlex">
+    
+    <p [hidden]="hid"><strong>{{errorMessage}}</strong></p>
+
+    <h1>REGISTER</h1>
+
+    <i>Your password must be at least 8 characters long.</i>
+    <form [formGroup]="inscriptionForm" class="displayFlex">
+
+        <div>
+            <p>Your username :</p>
+            <mat-form-field>
+                <input matInput type="text" formControlName="user" />
+            </mat-form-field>
+        </div>
+
+
+        <div>
+            <p>Your password :</p>
+            <mat-form-field>
+                <input matInput type="password" formControlName="passwd" />
+            </mat-form-field>
+        </div>
+
+
+        <div>
+            <p>Confirm your password :</p>
+            <mat-form-field>
+                <input matInput type="password" formControlName="confPasswd" />
+            </mat-form-field>
+        </div>
+
+
+    <button type="button" class="btn btn-light"  (click)="registerUser()">Register</button>
+    <br>
+
+    <a routerLink="/login" routerLinkActive="active">Log In</a>
+</form>
+
+</div>
