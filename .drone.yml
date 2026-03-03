@@ -83,6 +83,7 @@ steps:
     image: plugins/docker
     depends_on:
       - "🛠 build"
+      - "🧪 tests-unitaires"
     settings:
       registry: registry.davalada.valorium-mc.fr
       repo: registry.davalada.valorium-mc.fr/colors-main
