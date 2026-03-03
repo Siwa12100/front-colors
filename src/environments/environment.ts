@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://api.colors.valorium-mc.fr',
+  apiBaseUrl: 'http://ecirada.valorium-mc.fr:5016',
   logHttpErrors: true,
 };
