@@ -1,0 +1,29 @@
+<div class="displayFlex">
+    <h1>LOG IN</h1>
+
+    <p class="error" [hidden]="hid"><strong>{{errorMessage}}</strong></p>
+
+    <form [formGroup]="connexionForm" class="displayFlex">
+
+        <div>
+            <p>Your username :</p>
+            <mat-form-field>
+                <input matInput type="text" formControlName="user" />
+            </mat-form-field>
+        </div>
+
+        <div>
+            <p>Your password :</p>
+            <mat-form-field>
+                <input matInput type="password" formControlName="passwd" />
+            </mat-form-field>
+        </div>
+
+    <button type="button" class="btn btn-light" (click)="loginUser()">Connect</button>
+    <br>
+
+    <a routerLink="/register" routerLinkActive="active">Register</a>
+
+</form>
+
+</div>
