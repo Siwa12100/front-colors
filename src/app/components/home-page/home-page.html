@@ -1,1 +1,12 @@
-<p>home-page works!</p>
+<div class="home-container">
+  @if (isLoggedIn) {
+    <h1>Bienvenue, {{ userInfo?.fullName }}</h1>
+    <p>Email : {{ userInfo?.email }}</p>
+    <p>Rôle : {{ userInfo?.role }}</p>
+    <button (click)="logout()">Se déconnecter</button>
+  } @else {
+    <h1>Bienvenue sur Colors</h1>
+    <p>Vous n'êtes pas connecté.</p>
+    <button (click)="goToLogin()">Se connecter</button>
+  }
+</div>

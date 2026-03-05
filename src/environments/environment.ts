@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://ecirada.valorium-mc.fr:5016',
+  apiBaseUrl: 'http://localhost:5013', // TODO : mettre l'URL du backend - à modifier pour la prod
   logHttpErrors: true,
 };
