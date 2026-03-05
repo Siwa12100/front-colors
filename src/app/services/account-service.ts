@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AccountService {
 
   constructor() { }
@@ -30,7 +31,22 @@ export class AccountService {
 
   public async registerUser(username: string, password: string)//: Promise<string> TO DECOMMENT WHEN API WORKING
   {
+    let imagenumber  = 4
     //TODO
+    let url = "http://minecraft@valorium/api/images"
+    //TODO Get local storage token to concat
+    let contentType = "application/json"
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: contentType,
+        'Content-Type': contentType,
+      }
+    });
+
+
+    
   }
   
   public async loginUser(username: string, password: string)//: Promise<string> TO DECOMMENT WHEN API WORKING

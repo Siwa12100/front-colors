@@ -1,0 +1,103 @@
+<div class="source-manager">
+  <div class="sm-header">
+    <span class="sm-title">Sources</span>
+    <button class="btn-add-source" (click)="toggleAddForm()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Ajouter
+    </button>
+  </div>
+
+  <!-- Existing sources -->
+  @if (workspace().sources.length > 0) {
+    <div class="sources-list">
+      @for (source of workspace().sources; track source.id) {
+        <div class="source-item">
+          <div class="source-info">
+            <div class="source-name-row">
+              <span class="source-icon">
+                @switch (source.type) {
+                  @case ('google_drive') { 🔵 }
+                  @case ('dropbox') { 📦 }
+                  @case ('onedrive') { ☁️ }
+                  @default { 🔗 }
+                }
+              </span>
+              <span class="source-label">{{ source.label }}</span>
+              <span class="source-status" [class]="getStatusClass(source.status)">
+                {{ statusLabels[source.status] }}
+              </span>
+            </div>
+            @if (source.photoCount !== undefined) {
+              <div class="source-meta">{{ source.photoCount }} photos · Sync {{ formatDate(source.lastSync!) }}</div>
+            }
+          </div>
+          <button class="btn-remove" (click)="removeSource.emit(source.id)" title="Supprimer la source">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="no-sources">Aucune source connectée.</p>
+  }
+
+  <!-- Add source form -->
+  @if (showAddForm()) {
+    <div class="add-form">
+      <div class="form-title">Nouvelle source</div>
+
+      <!-- Type selector -->
+      <div class="type-selector">
+        @for (t of sourceTypes; track t.value) {
+          <button
+            class="type-btn"
+            [class.active]="selectedType() === t.value"
+            (click)="setSourceType(t.value)"
+          >
+            <span>{{ t.icon }}</span>
+            <span class="type-label">{{ t.label }}</span>
+          </button>
+        }
+      </div>
+
+      <!-- Label -->
+      <div class="form-group">
+        <label class="form-label">Nom de la source</label>
+        <input class="form-input" type="text" placeholder="ex: Drive Photo Pro" [value]="label()" (input)="onLabelChange($any($event.target).value)" />
+      </div>
+
+      <!-- Drive-specific -->
+      @if (selectedType() === 'google_drive' || selectedType() === 'dropbox' || selectedType() === 'onedrive') {
+        <div class="form-group">
+          <label class="form-label">Nom du dossier</label>
+          <input class="form-input" type="text" placeholder="Nom du dossier source" [value]="driveFolder()" (input)="onDriveFolderChange($any($event.target).value)" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">ID du dossier</label>
+          <input class="form-input" type="text" placeholder="Identifiant unique" [value]="driveId()" (input)="onDriveIdChange($any($event.target).value)" />
+        </div>
+        <button class="btn-oauth">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+          Se connecter via OAuth
+        </button>
+      }
+
+      <!-- URL-specific -->
+      @if (selectedType() === 'url') {
+        <div class="form-group">
+          <label class="form-label">Endpoint API</label>
+          <input class="form-input" type="url" placeholder="https://api.example.com/photos" [value]="apiEndpoint()" (input)="onApiEndpointChange($any($event.target).value)" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Clé API (optionnel)</label>
+          <input class="form-input" type="password" placeholder="••••••••" [value]="apiKey()" (input)="onApiKeyChange($any($event.target).value)" />
+        </div>
+      }
+
+      <div class="form-actions">
+        <button class="btn-cancel" (click)="cancelAddForm()">Annuler</button>
+        <button class="btn-submit" (click)="submit()" [disabled]="!label()">Ajouter</button>
+      </div>
+    </div>
+  }
+</div>

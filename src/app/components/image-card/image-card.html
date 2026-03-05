@@ -1,0 +1,57 @@
+<article
+  class="image-card"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+>
+  <a
+    class="card-image-link"
+    [href]="photo().url"
+    target="_blank"
+    (click)="$event.preventDefault(); openDetail.emit(photo())"
+    [attr.aria-label]="'Voir ' + photo().name"
+  >
+    <!-- Skeleton loader -->
+    @if (!loaded()) {
+      <div class="skeleton"></div>
+    }
+
+    <img
+      [src]="photo().thumbnailUrl"
+      [alt]="photo().name"
+      class="card-image"
+      [class.loaded]="loaded()"
+      (load)="onImageLoad()"
+      loading="lazy"
+    />
+
+    <!-- Overlay on hover -->
+    <div class="card-overlay" [class.visible]="hovered()">
+      <div class="overlay-top">
+        <span class="photo-format">{{ photo().mimeType.split('/')[1].toUpperCase() }}</span>
+        <span class="photo-size">{{ formatSize(photo().size) }}</span>
+      </div>
+
+      <div class="overlay-center">
+        <svg class="zoom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
+        </svg>
+      </div>
+
+      <div class="overlay-bottom">
+        <div class="tags-preview">
+          @for (tag of photo().tags.slice(0, 3); track tag) {
+            <span class="mini-tag">#{{ tag }}</span>
+          }
+          @if (photo().tags.length > 3) {
+            <span class="mini-tag more">+{{ photo().tags.length - 3 }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <div class="card-footer">
+    <span class="photo-name" [title]="photo().name">{{ photo().name }}</span>
+    <span class="photo-dims">{{ photo().width }}×{{ photo().height }}</span>
+  </div>
+</article>
