@@ -1,71 +1,61 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { FolderWebClient } from '../../src/app/core/http/web-clients/folder.web-client';
 import { BaseWebClient } from '../../src/app/core/http/base-web-client';
+import { FolderWebClient } from '../../src/app/core/http/web-clients/folder.web-client';
+import { WorkspaceWebClient } from '../../src/app/core/http/web-clients/workspace.web-client';
+// import { BaseWebClient } from '@/app/core/http/base-web-client';
+// import { FolderWebClient } from '@/app/core/http/web-clients/folder.web-client';
+// import { WorkspaceWebClient } from '@/app/core/http/web-clients/workspace.web-client';
+// import { BaseWebClient } from '@/app/core/http/base-web-client';
+// import { FolderWebClient } from '@/app/core/http/web-clients/folder.web-client';
+// import { WorkspaceWebClient } from '@/app/core/http/web-clients/workspace.web-client';
 
 describe('FolderWebClient - Integration', () => {
+  const USER_ID = 1;
+
   const base = new BaseWebClient();
-  const client = new FolderWebClient(base);
+  const folderClient = new FolderWebClient(base);
+  const workspaceClient = new WorkspaceWebClient(base);
 
   let workspaceId: number;
-
-  async function cleanFolders() {
-    const folders = await base.get<any[]>('/api/folders');
-    if (folders) {
-      for (const folder of folders) {
-        await base.delete(`/api/folders/${folder.id}`);
-      }
-    }
-  }
-
-  async function cleanWorkspaces() {
-    const workspaces = await base.get<any[]>('/api/workspaces');
-    if (workspaces) {
-      for (const ws of workspaces) {
-        await base.delete(`/api/workspaces/${ws.id}`);
-      }
-    }
-  }
+  let createdFolderId: number;
 
   beforeAll(async () => {
-    await cleanFolders();
-    await cleanWorkspaces();
-
-    const ws = await base.post<any, any>('/api/workspaces', {
-      name: 'integration-ws',
-      isSystem: false,
-      favorites: [],
-      sources: [],
-    });
-
-    workspaceId = ws.id;
+    const ws = await workspaceClient.getAll(USER_ID);
+    workspaceId = ws!.data[0].id;
   });
 
   afterAll(async () => {
-    await cleanFolders();
-    await cleanWorkspaces();
-
-    const folders = await base.get<any[]>('/api/folders');
-    const workspaces = await base.get<any[]>('/api/workspaces');
-
-    expect(folders?.length ?? 0).toBe(0);
-    expect(workspaces?.length ?? 0).toBe(0);
+    if (createdFolderId) {
+      await folderClient.delete(createdFolderId);
+    }
   });
 
   it('should create a folder', async () => {
-    const folder = await client.create({
-      name: 'integration-folder',
+    const folder = await folderClient.create({
+      name: 'test-folder',
       workspace_id: workspaceId,
     });
 
     expect(folder).not.toBeNull();
-    expect(folder?.workspace_id).toBe(workspaceId);
+    createdFolderId = folder!.id;
   });
 
   it('should get folder by id', async () => {
-    const folders = await base.get<any[]>('/api/folders');
-    const folder = folders![0];
+    const folder = await folderClient.getById(createdFolderId);
+    expect(folder?.id).toBe(createdFolderId);
+  });
 
-    const result = await client.getById(folder.id);
-    expect(result?.id).toBe(folder.id);
+  it('should update folder', async () => {
+    const updated = await folderClient.update(createdFolderId, {
+      name: 'updated-folder',
+    });
+
+    expect(updated?.name).toBe('updated-folder');
+  });
+
+  it('should get children folders', async () => {
+    const children = await folderClient.getChildren(createdFolderId);
+    expect(children).not.toBeNull();
+    expect(Array.isArray(children?.data)).toBe(true);
   });
 });

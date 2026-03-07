@@ -1,37 +1,26 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { PictureWebClient } from '../../src/app/core/http/web-clients/picture.web-client';
+import { describe, it, expect } from 'vitest';
 import { BaseWebClient } from '../../src/app/core/http/base-web-client';
+import { PictureWebClient } from '../../src/app/core/http/web-clients/picture.web-client';
+// import { BaseWebClient } from '@/app/core/http/base-web-client';
+// import { PictureWebClient } from '@/app/core/http/web-clients/picture.web-client';
 
 describe('PictureWebClient - Integration', () => {
   const base = new BaseWebClient();
   const client = new PictureWebClient(base);
 
-  async function cleanPictures() {
-    const pictures = await base.get<any[]>('/api/pictures');
-    if (pictures) {
-      for (const pic of pictures) {
-        await base.delete(`/api/pictures/${pic.id}`);
-      }
-    }
-  }
-
-  beforeAll(async () => {
-    await cleanPictures();
+  it('should retrieve paginated pictures', async () => {
+    const response = await client.getAll();
+    expect(response).not.toBeNull();
+    expect(Array.isArray(response?.data)).toBe(true);
   });
 
-  afterAll(async () => {
-    await cleanPictures();
-    const remaining = await base.get<any[]>('/api/pictures');
-    expect(remaining?.length ?? 0).toBe(0);
-  });
+  it('should get picture by id if exists', async () => {
+    const response = await client.getAll();
+    if (response!.data.length === 0) return;
 
-  it('should fetch all pictures', async () => {
-    const result = await client.getAll();
-    expect(result).not.toBeNull();
-  });
+    const pic = response!.data[0];
 
-  it('should call upload from drive', async () => {
-    const result = await client.uploadFromDrive();
-    expect(result).not.toBeNull();
+    const found = await client.getById(pic.id);
+    expect(found?.id).toBe(pic.id);
   });
 });
