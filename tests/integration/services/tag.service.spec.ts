@@ -14,7 +14,6 @@ describe('TagService - Integration', () => {
 
   const TEST_HEX = '#FF00AA';
 
-  // ✅ CLEANUP SÉCURISÉ
   afterAll(async () => {
     if (createdTagId) {
       try {
@@ -39,7 +38,6 @@ describe('TagService - Integration', () => {
 
 
 
-  // ✅ CREATE
   it('should create a new tag', async () => {
     const tag = await service.create(TEST_TAG_NAME, TEST_HEX);
 
@@ -50,7 +48,6 @@ describe('TagService - Integration', () => {
     createdTagId = tag.id;
   });
 
-  // ✅ GET ALL
   it('should return paginated tags', async () => {
     const page = await service.getAll(1, 20);
 
@@ -59,7 +56,6 @@ describe('TagService - Integration', () => {
     expect(page.page).toBe(1);
   });
 
-  // ✅ FIND BY NAME
   it('should find tag by name', async () => {
     const found = await service.findByName(TEST_TAG_NAME);
 
@@ -67,7 +63,6 @@ describe('TagService - Integration', () => {
     expect(found?.id).toBe(createdTagId);
   });
 
-  // ✅ UPDATE
   it('should update an existing tag', async () => {
     const updated = await service.update(createdTagId, {
       name: TEST_TAG_NAME + '-updated',
@@ -76,7 +71,6 @@ describe('TagService - Integration', () => {
     expect(updated.name).toContain('-updated');
   });
 
-  // ✅ DELETE
   it('should delete tag', async () => {
     await service.delete(createdTagId);
 

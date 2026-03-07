@@ -12,7 +12,6 @@ describe('PictureService - Integration', () => {
 
   let pictureId: number;
 
-  // ✅ On récupère une image existante
   beforeAll(async () => {
     const page = await service.search({}, 1, 10);
 
@@ -21,7 +20,6 @@ describe('PictureService - Integration', () => {
     pictureId = page.items[0].id;
   });
 
-  // ✅ SEARCH
   it('should return paginated pictures', async () => {
     const page = await service.search({}, 1, 10);
 
@@ -30,14 +28,12 @@ describe('PictureService - Integration', () => {
     expect(page.total).toBeGreaterThanOrEqual(1);
   });
 
-  // ✅ SEARCH WITH FILTER
   it('should filter by name', async () => {
     const page = await service.search({ name: '' }, 1, 10);
 
     expect(Array.isArray(page.items)).toBe(true);
   });
 
-  // ✅ GET BY ID
   it('should get picture by id', async () => {
     const picture = await service.getById(pictureId);
 
@@ -45,7 +41,6 @@ describe('PictureService - Integration', () => {
     expect(typeof picture.name).toBe('string');
   });
 
-  // ✅ UPDATE
   it('should update picture name', async () => {
     const original = await service.getById(pictureId);
 

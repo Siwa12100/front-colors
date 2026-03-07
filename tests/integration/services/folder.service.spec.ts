@@ -25,7 +25,7 @@ describe('FolderService - Integration', () => {
 
   const TEST_FOLDER_NAME = 'int-folder';
 
-  // ✅ On récupère un workspace existant
+  // On récupère un workspace existant
   beforeAll(async () => {
     const page = await workspaceService.getAll(USER_ID, 1, 10);
 
@@ -34,7 +34,6 @@ describe('FolderService - Integration', () => {
     workspaceId = page.items[0].id;
   });
 
-  // ✅ Cleanup sécurisé
   afterAll(async () => {
     if (folderId) {
       try {
@@ -43,7 +42,6 @@ describe('FolderService - Integration', () => {
     }
   });
 
-  // ✅ CREATE
   it('should create a folder', async () => {
     const folder = await service.create(
       TEST_FOLDER_NAME,
@@ -58,7 +56,6 @@ describe('FolderService - Integration', () => {
     folderId = folder.id;
   });
 
-  // ✅ GET BY ID
   it('should get folder by id', async () => {
     const folder = await service.getById(folderId);
 
@@ -66,7 +63,6 @@ describe('FolderService - Integration', () => {
     expect(folder.name).toBe(TEST_FOLDER_NAME);
   });
 
-  // ✅ UPDATE
   it('should update folder name', async () => {
     const updated = await service.update(folderId, {
       name: 'int-folder-updated',
@@ -75,14 +71,12 @@ describe('FolderService - Integration', () => {
     expect(updated.name).toBe('int-folder-updated');
   });
 
-  // ✅ GET CHILDREN (vide normalement)
   it('should return empty children', async () => {
     const children = await service.getChildren(folderId);
 
     expect(Array.isArray(children)).toBe(true);
   });
 
-  // ✅ DELETE
   it('should delete folder', async () => {
     await service.delete(folderId);
 
