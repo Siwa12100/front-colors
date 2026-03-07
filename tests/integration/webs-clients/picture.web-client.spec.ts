@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { BaseWebClient } from '../../src/app/core/http/base-web-client';
-import { PictureWebClient } from '../../src/app/core/http/web-clients/picture.web-client';
+import { BaseWebClient } from '../../../src/app/core/http/base-web-client';
+import { PictureWebClient } from '../../../src/app/core/http/web-clients/picture.web-client';
 
 describe('PictureWebClient - Integration', () => {
   const base = new BaseWebClient();

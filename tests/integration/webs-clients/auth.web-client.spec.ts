@@ -1,6 +1,6 @@
 import { describe, it, expect, afterAll } from 'vitest';
-import { BaseWebClient } from '../../src/app/core/http/base-web-client';
-import { AuthWebClient } from '../../src/app/core/http/web-clients/auth.web-client';
+import { BaseWebClient } from '../../../src/app/core/http/base-web-client';
+import { AuthWebClient } from '../../../src/app/core/http/web-clients/auth.web-client';
 
 describe('AuthWebClient - Integration', () => {
 

@@ -6,5 +6,6 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['tests/**/*.spec.ts'],
     setupFiles: ['tests/setup.ts'],
+    fileParallelism: false,
   },
 });

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { BaseWebClient } from '../../src/app/core/http/base-web-client';
-import { TagWebClient } from '../../src/app/core/http/web-clients/tag.web-client';
+import { BaseWebClient } from '../../../src/app/core/http/base-web-client';
+import { TagWebClient } from '../../../src/app/core/http/web-clients/tag.web-client';
 
 describe('TagWebClient - Integration', () => {
   const base = new BaseWebClient();

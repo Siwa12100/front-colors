@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { BaseWebClient } from '../../src/app/core/http/base-web-client';
-import { FolderWebClient } from '../../src/app/core/http/web-clients/folder.web-client';
-import { WorkspaceWebClient } from '../../src/app/core/http/web-clients/workspace.web-client';
+import { BaseWebClient } from '../../../src/app/core/http/base-web-client';
+import { FolderWebClient } from '../../../src/app/core/http/web-clients/folder.web-client';
+import { WorkspaceWebClient } from '../../../src/app/core/http/web-clients/workspace.web-client';
 
 describe('FolderWebClient - Integration', () => {
   const USER_ID = 1;

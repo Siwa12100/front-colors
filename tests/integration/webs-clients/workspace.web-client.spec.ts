@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { BaseWebClient } from '../../src/app/core/http/base-web-client';
-import { WorkspaceWebClient } from '../../src/app/core/http/web-clients/workspace.web-client';
+import { BaseWebClient } from '../../../src/app/core/http/base-web-client';
+import { WorkspaceWebClient } from '../../../src/app/core/http/web-clients/workspace.web-client';
 
 describe('WorkspaceWebClient - Integration', () => {
   const USER_ID = 1;
