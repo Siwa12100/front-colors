@@ -11,7 +11,7 @@ export class AuthCallbackPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Lire les paramètres de l'URL (?token=...&email=...&full_name=...&role=...)
@@ -34,8 +34,13 @@ export class AuthCallbackPage implements OnInit {
         this.router.navigateByUrl('/home');
       } else {
         // Pas de token = erreur, retour au login
-        console.error('Aucun token reçu de l\'API.');
-        this.router.navigateByUrl('/login');
+        const error = params['error'];
+        const messages: Record<string, string> = {
+          unauthorized: 'Votre compte Google doit être autorisé par un administrateur.',
+          disabled: 'Votre compte a été désactivé. Contactez un administrateur.',
+        };
+        const msg = messages[error] ?? 'Une erreur est survenue.';
+        this.router.navigateByUrl('/login?error=' + error + '&msg=' + encodeURIComponent(msg));
       }
     });
   }
