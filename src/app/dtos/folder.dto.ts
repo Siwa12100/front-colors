@@ -3,4 +3,5 @@ export interface FolderDto {
   name: string;
   workspace_id: number;
   parent_folder_id: number | null;
+  pictures: number[];
 }

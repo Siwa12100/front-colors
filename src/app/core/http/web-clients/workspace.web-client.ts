@@ -30,10 +30,34 @@ export class WorkspaceWebClient {
   }
 
   async getFolders(
-    workspaceId: number
-  ): Promise<{ data: FolderDto[]; total: number } | null> {
-    return this.base.get<{ data: FolderDto[]; total: number }>(
-      `${this.route}/${workspaceId}/folders`
+    workspaceId: number,
+    page = 1,
+    perPage = 20
+  ): Promise<PaginationDto<FolderDto> | null> {
+    return this.base.get<PaginationDto<FolderDto>>(
+      `${this.route}/${workspaceId}/folders`,
+      { params: { page, per_page: perPage } }
+    );
+  }
+
+  async getPictures(
+    workspaceId: number,
+    page = 1,
+    perPage = 20
+  ): Promise<PaginationDto<PictureDto> | null> {
+    return this.base.get<PaginationDto<PictureDto>>(
+      `${this.route}/${workspaceId}/pictures`,
+      { params: { page, per_page: perPage } }
+    );
+  }
+
+  async update(
+    id: number,
+    payload: Partial<WorkspaceDto>
+  ): Promise<WorkspaceDto | null> {
+    return this.base.put<Partial<WorkspaceDto>, WorkspaceDto>(
+      `${this.route}/${id}`,
+      payload
     );
   }
 }

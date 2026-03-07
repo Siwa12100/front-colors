@@ -2,12 +2,6 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { BaseWebClient } from '../../src/app/core/http/base-web-client';
 import { FolderWebClient } from '../../src/app/core/http/web-clients/folder.web-client';
 import { WorkspaceWebClient } from '../../src/app/core/http/web-clients/workspace.web-client';
-// import { BaseWebClient } from '@/app/core/http/base-web-client';
-// import { FolderWebClient } from '@/app/core/http/web-clients/folder.web-client';
-// import { WorkspaceWebClient } from '@/app/core/http/web-clients/workspace.web-client';
-// import { BaseWebClient } from '@/app/core/http/base-web-client';
-// import { FolderWebClient } from '@/app/core/http/web-clients/folder.web-client';
-// import { WorkspaceWebClient } from '@/app/core/http/web-clients/workspace.web-client';
 
 describe('FolderWebClient - Integration', () => {
   const USER_ID = 1;
@@ -17,7 +11,7 @@ describe('FolderWebClient - Integration', () => {
   const workspaceClient = new WorkspaceWebClient(base);
 
   let workspaceId: number;
-  let createdFolderId: number;
+  let folderId: number;
 
   beforeAll(async () => {
     const ws = await workspaceClient.getAll(USER_ID);
@@ -25,37 +19,41 @@ describe('FolderWebClient - Integration', () => {
   });
 
   afterAll(async () => {
-    if (createdFolderId) {
-      await folderClient.delete(createdFolderId);
+    if (folderId) {
+      await folderClient.delete(folderId);
     }
   });
 
-  it('should create a folder', async () => {
+  it('should create folder', async () => {
     const folder = await folderClient.create({
       name: 'test-folder',
       workspace_id: workspaceId,
     });
 
-    expect(folder).not.toBeNull();
-    createdFolderId = folder!.id;
+    folderId = folder!.id;
+    expect(folder?.workspace_id).toBe(workspaceId);
   });
 
-  it('should get folder by id', async () => {
-    const folder = await folderClient.getById(createdFolderId);
-    expect(folder?.id).toBe(createdFolderId);
-  });
-
-  it('should update folder', async () => {
-    const updated = await folderClient.update(createdFolderId, {
-      name: 'updated-folder',
+  it('should update folder name', async () => {
+    const updated = await folderClient.update(folderId, {
+      name: 'renamed-folder',
     });
 
-    expect(updated?.name).toBe('updated-folder');
+    expect(updated?.name).toBe('renamed-folder');
+  });
+
+  it('should retrieve folder by id', async () => {
+    const found = await folderClient.getById(folderId);
+    expect(found?.id).toBe(folderId);
   });
 
   it('should get children folders', async () => {
-    const children = await folderClient.getChildren(createdFolderId);
-    expect(children).not.toBeNull();
+    const children = await folderClient.getChildren(folderId);
     expect(Array.isArray(children?.data)).toBe(true);
+  });
+
+  it('should get pictures of folder (paginated)', async () => {
+    const pictures = await folderClient.getPictures(folderId);
+    expect(Array.isArray(pictures?.data)).toBe(true);
   });
 });

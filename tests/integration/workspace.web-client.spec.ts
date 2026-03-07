@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { BaseWebClient } from '../../src/app/core/http/base-web-client';
 import { WorkspaceWebClient } from '../../src/app/core/http/web-clients/workspace.web-client';
-// import { BaseWebClient } from '@/app/core/http/base-web-client';
-// import { WorkspaceWebClient } from '@/app/core/http/web-clients/workspace.web-client';
 
 describe('WorkspaceWebClient - Integration', () => {
   const USER_ID = 1;
@@ -10,29 +8,37 @@ describe('WorkspaceWebClient - Integration', () => {
   const base = new BaseWebClient();
   const client = new WorkspaceWebClient(base);
 
-  it('should get workspaces for a user (auto-creates if empty)', async () => {
+  let workspaceId: number;
+
+  it('should get workspaces for user', async () => {
     const response = await client.getAll(USER_ID);
 
     expect(response).not.toBeNull();
-    expect(response?.data.length).toBeGreaterThan(0);
+    expect(response!.data.length).toBeGreaterThan(0);
+
+    workspaceId = response!.data[0].id;
   });
 
   it('should get workspace by id', async () => {
-    const response = await client.getAll(USER_ID);
-    const workspace = response?.data[0];
-
-    const found = await client.getById(workspace!.id);
-
-    expect(found?.id).toBe(workspace!.id);
+    const found = await client.getById(workspaceId);
+    expect(found?.id).toBe(workspaceId);
   });
 
-  it('should get folders of a workspace', async () => {
-    const response = await client.getAll(USER_ID);
-    const workspace = response?.data[0];
+  it('should update workspace name', async () => {
+    const updated = await client.update(workspaceId, {
+      name: 'updated-workspace',
+    });
 
-    const folders = await client.getFolders(workspace!.id);
+    expect(updated?.name).toBe('updated-workspace');
+  });
 
-    expect(folders).not.toBeNull();
+  it('should get workspace folders (paginated)', async () => {
+    const folders = await client.getFolders(workspaceId);
     expect(Array.isArray(folders?.data)).toBe(true);
+  });
+
+  it('should get workspace pictures (paginated)', async () => {
+    const pictures = await client.getPictures(workspaceId);
+    expect(Array.isArray(pictures?.data)).toBe(true);
   });
 });
