@@ -11,9 +11,17 @@ export class WorkspaceWebClient {
 
   constructor(private readonly base: BaseWebClient) {}
 
-  async getAll(page = 1, perPage = 20): Promise<PaginationDto<WorkspaceDto> | null> {
+  async getAll(
+    userId: number,
+    page = 1,
+    perPage = 20
+  ): Promise<PaginationDto<WorkspaceDto> | null> {
     return this.base.get<PaginationDto<WorkspaceDto>>(this.route, {
-      params: { page, per_page: perPage },
+      params: {
+        user_id: userId,
+        page,
+        per_page: perPage,
+      },
     });
   }
 
@@ -21,25 +29,11 @@ export class WorkspaceWebClient {
     return this.base.get<WorkspaceDto>(`${this.route}/${id}`);
   }
 
-  async getPictures(
-    id: number,
-    page = 1,
-    perPage = 20
-  ): Promise<PaginationDto<PictureDto> | null> {
-    return this.base.get<PaginationDto<PictureDto>>(
-      `${this.route}/${id}/pictures`,
-      { params: { page, per_page: perPage } }
-    );
-  }
-
   async getFolders(
-    id: number,
-    page = 1,
-    perPage = 20
-  ): Promise<PaginationDto<FolderDto> | null> {
-    return this.base.get<PaginationDto<FolderDto>>(
-      `${this.route}/${id}/folders`,
-      { params: { page, per_page: perPage } }
+    workspaceId: number
+  ): Promise<{ data: FolderDto[]; total: number } | null> {
+    return this.base.get<{ data: FolderDto[]; total: number }>(
+      `${this.route}/${workspaceId}/folders`
     );
   }
 }

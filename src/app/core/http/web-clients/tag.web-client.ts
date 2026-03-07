@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseWebClient } from '../base-web-client';
 import { TagDto } from '../../../dtos/tag.dto';
+import { PaginationDto } from '../../../dtos/pagination.dto';
 
 @Injectable({ providedIn: 'root' })
 export class TagWebClient {
@@ -8,8 +9,13 @@ export class TagWebClient {
 
   constructor(private readonly base: BaseWebClient) {}
 
-  async getAll(): Promise<TagDto[] | null> {
-    return this.base.get<TagDto[]>(this.route);
+  async getAll(
+    page = 1,
+    perPage = 20
+  ): Promise<PaginationDto<TagDto> | null> {
+    return this.base.get<PaginationDto<TagDto>>(this.route, {
+      params: { page, per_page: perPage },
+    });
   }
 
   async create(payload: {
