@@ -5,7 +5,7 @@ import { mapPicture } from '../../mappers/picture.mapper';
 import { mapPagination } from '../../mappers/pagination.mapper';
 import { Picture } from '../../models/picture.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PictureService implements IPictureService {
 
   constructor(private readonly client: PictureWebClient) {}

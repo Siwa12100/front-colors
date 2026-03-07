@@ -6,7 +6,7 @@ import { mapFolder } from '../../mappers/folder.mapper';
 import { mapPicture } from '../../mappers/picture.mapper';
 import { mapPagination } from '../../mappers/pagination.mapper';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class WorkspaceService implements IWorkspaceService {
 
   constructor(private readonly client: WorkspaceWebClient) {}
