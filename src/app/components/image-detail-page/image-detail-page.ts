@@ -29,7 +29,7 @@ export class ImageDetailPageComponent {
 
   downloadPhoto() {
     const a = document.createElement('a');
-    a.href = this.photo().url;
+    a.href = this.photo().downloadLink;
     a.download = this.photo().name;
     a.target = '_blank';
     a.click();

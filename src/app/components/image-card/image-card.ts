@@ -25,4 +25,9 @@ export class ImageCardComponent {
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   }
+
+  onImageError(event: any) {
+    console.error('Image failed to load:', this.photo().thumbnailLink, event);
+    this.loaded.set(true); // affiche quand même le slot
+  }
 }

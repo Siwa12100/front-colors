@@ -7,13 +7,12 @@
     }
 
     <img [src]="photo().thumbnailLink" [alt]="photo().name" class="card-image" [class.loaded]="loaded()"
-      (load)="onImageLoad()" loading="lazy" />
+      (load)="onImageLoad()" loading="lazy" (error)="onImageError($event)" />
 
     <!-- Overlay on hover -->
     <div class="card-overlay" [class.visible]="hovered()">
       <div class="overlay-top">
-        <!-- TODO : l'api ne revoie pas le type pour l'instant-->>
-        <span class="photo-format">{{ (photo().mimeType ?? 'image/jpeg').split('/')[1].toUpperCase() }}</span>
+        <span class="photo-format">{{ (photo().name.match(/\.(\w+)$/)?.[1] ?? 'unknown').toUpperCase() }}</span>
         <span class="photo-size">{{ formatSize(photo().size) }}</span>
       </div>
 

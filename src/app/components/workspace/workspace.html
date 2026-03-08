@@ -34,6 +34,7 @@
           </svg>
         </button>
       </div>
+      <app-user-menu />
     </div>
   </header>
 
@@ -93,7 +94,7 @@
       }
 
       <!-- Photos section -->
-      <app-image-gallery />
+      <app-image-gallery (openDetail)="openDetail($event)" />
       }
     </main>
 

@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorkspaceService } from '../../services/workspace-service';
 import { Photo } from '../../models';
-import { ImageCardComponent } from '../image-card/image-card';
 import { ImageDetailPageComponent } from '../image-detail-page/image-detail-page';
 import { FolderComponent } from '../folder/folder';
 import { SearchBarComponent } from '../search-bar/search-bar';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { ImageGallery } from '../image-gallery/image-gallery';
+import { UserMenuComponent } from '../user-menu/user-menu';
 
 @Component({
   selector: 'app-workspace',
@@ -16,12 +16,12 @@ import { ImageGallery } from '../image-gallery/image-gallery';
   imports: [
     CommonModule,
     FormsModule,
-    ImageCardComponent,
     ImageDetailPageComponent,
     FolderComponent,
     SearchBarComponent,
     WorkspaceSidebarComponent,
-    ImageGallery
+    ImageGallery,
+    UserMenuComponent
   ],
   templateUrl: './workspace.html',
   styleUrls: ['./workspace.css']

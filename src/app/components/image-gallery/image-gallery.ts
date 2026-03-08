@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImagesService } from '../../services/images-service';
 import { ImageCardComponent } from '../image-card/image-card';
@@ -30,7 +30,8 @@ export class ImageGallery implements OnInit {
     }
   }
 
+  openDetail = output<Photo>();
   onOpenDetail(photo: Photo) {
-    console.log('Détail :', photo);
+    this.openDetail.emit(photo);
   }
 }
