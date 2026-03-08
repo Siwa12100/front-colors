@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, Inject, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorkspaceService } from '../../services/workspace-service';
 import { SourceManagerComponent } from '../source-manager/source-manager';
-import { PhotoSource } from '../../models';
+import { PhotoSource, Workspace } from '../../models';
 
 @Component({
   selector: 'app-workspace-sidebar',
@@ -47,3 +47,4 @@ export class WorkspaceSidebarComponent {
     this.svc.removeSource(wsId, sourceId);
   }
 }
+
