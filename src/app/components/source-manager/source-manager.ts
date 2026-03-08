@@ -1,7 +1,9 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PhotoSource, Workspace } from '../../models';
+import { IPictureService } from '../../services/pictures/IPictureService';
+import { PICTURE_SERVICE } from '../../core/di-tokens/picture.token';
 
 type SourceType = 'google_drive' | 'dropbox' | 'onedrive' | 'url';
 
@@ -13,8 +15,12 @@ type SourceType = 'google_drive' | 'dropbox' | 'onedrive' | 'url';
   styleUrls: ['./source-manager.css']
 })
 export class SourceManagerComponent {
+
+  private pictureService = inject(PICTURE_SERVICE) as IPictureService;
+  
   workspace = input.required<Workspace>();
   addSource = output<PhotoSource>();
+  
   removeSource = output<string>();
 
   showAddForm = signal(false);
