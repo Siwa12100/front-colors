@@ -1,14 +1,16 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, Inject } from '@angular/core';
 import { Photo, Folder, Workspace, PhotoSource, SearchFilters } from '../models';
+import { IWorkspaceService } from './workspaces/IWorkspaceService';
 
 @Injectable({ providedIn: 'root' })
 export class WorkspaceService {
-  private _workspaces = signal<Workspace[]>(MOCK_WORKSPACES);
+  private _workspaces = signal<Workspace[]>([]);
   private _photos = signal<Photo[]>(MOCK_PHOTOS);
   private _folders = signal<Folder[]>([]);
   private _activeWorkspaceId = signal<string>('ws-1');
   private _searchQuery = signal<string>('');
   private _filters = signal<SearchFilters>({ tags: [], mimeTypes: [], sources: [] });
+
 
   readonly workspaces = this._workspaces.asReadonly();
   readonly activeWorkspaceId = this._activeWorkspaceId.asReadonly();
@@ -68,6 +70,10 @@ export class WorkspaceService {
       .forEach(p => p.tags.forEach(t => tags.add(t)));
     return Array.from(tags).sort();
   });
+
+  setWorkspace(workspaces: Workspace[]) {
+    this._workspaces.set(workspaces);
+  }
 
   setActiveWorkspace(id: string) {
     this._activeWorkspaceId.set(id);

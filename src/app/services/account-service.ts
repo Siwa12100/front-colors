@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { WorkspaceService } from './workspace-service';
+import { Workspace } from '../models';
+import { IWorkspaceService } from './workspaces/IWorkspaceService';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +11,6 @@ import { environment } from '../../environments/environment';
 export class AccountService {
 
   private readonly apiBaseUrl = environment.apiBaseUrl;
-
-  constructor() { }
 
   public isNotEmptyUsername(username: string): boolean {
     return username.trim().length != 0;
