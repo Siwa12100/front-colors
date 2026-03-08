@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorkspaceService } from '../../services/workspace-service';
 import { SearchFilters } from '../../models';
+import { TagService } from '../../services/tags/tag.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -13,6 +14,7 @@ import { SearchFilters } from '../../models';
 })
 export class SearchBarComponent {
   private svc = inject(WorkspaceService);
+  private tagService = inject(TagService);
   private elRef = inject(ElementRef);
 
   searchQuery = signal('');
@@ -32,10 +34,21 @@ export class SearchBarComponent {
   sizeMin = signal<string>('');
   sizeMax = signal<string>('');
 
-  allTags = this.svc.allTags;
+  allTags = signal<string[]>([]);
+
+  constructor(){
+    this.loadTags();
+  }
+  async loadTags(){
+    try {
+      const result = await this.tagService.getAll(1, 1000);
+      this.allTags.set(result.items.map((t: any) => t.name));
+    }
+    catch{}
+  }
 
   filteredTagSuggestions = computed(() => {
-    const query = this.searchQuery().toLowerCase();
+    const query = this.searchQuery().slice(1).toLowerCase(); // ne pas prendre en compte le #
     if (!query) return this.allTags().slice(0, 8);
     return this.allTags().filter(t => t.toLowerCase().includes(query) && !this.selectedTags().includes(t)).slice(0, 6);
   });
@@ -57,7 +70,12 @@ export class SearchBarComponent {
   onQueryChange(query: string) {
     this.searchQuery.set(query);
     this.svc.setSearchQuery(query);
-    this.showTagSuggestions.set(true);
+    if (query == "" || query.startsWith("#")){
+      this.showTagSuggestions.set(true);
+    }
+    else{
+      this.showTagSuggestions.set(false);
+    }
   }
 
   selectTag(tag: string) {

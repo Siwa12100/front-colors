@@ -5,7 +5,7 @@ import { mapTag } from '../../mappers/tag.mapper';
 import { mapPagination } from '../../mappers/pagination.mapper';
 import { Tag } from '../../models/tag.model';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class TagService implements ITagService {
 
   constructor(private readonly client: TagWebClient) {}
