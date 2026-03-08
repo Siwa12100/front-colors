@@ -17,9 +17,7 @@
               <span class="source-icon">
                 @switch (source.type) {
                   @case ('google_drive') { 🔵 }
-                  @case ('dropbox') { 📦 }
                   @case ('onedrive') { ☁️ }
-                  @default { 🔗 }
                 }
               </span>
               <span class="source-label">{{ source.label }}</span>
@@ -60,39 +58,23 @@
         }
       </div>
 
-      <!-- Label -->
-      <div class="form-group">
-        <label class="form-label">Nom de la source</label>
-        <input class="form-input" type="text" placeholder="ex: Drive Photo Pro" [value]="label()" (input)="onLabelChange($any($event.target).value)" />
-      </div>
-
       <!-- Drive-specific -->
-      @if (selectedType() === 'google_drive' || selectedType() === 'dropbox' || selectedType() === 'onedrive') {
+      @if (selectedType() === 'google_drive' || selectedType() === 'onedrive') {
         <div class="form-group">
           <label class="form-label">Nom du dossier</label>
           <input class="form-input" type="text" placeholder="Nom du dossier source" [value]="driveFolder()" (input)="onDriveFolderChange($any($event.target).value)" />
         </div>
         <div class="form-group">
-          <label class="form-label">ID du dossier</label>
-          <input class="form-input" type="text" placeholder="Identifiant unique" [value]="driveId()" (input)="onDriveIdChange($any($event.target).value)" />
+          <label class="form-label">Lien vers le dossier</label>
+          <input class="form-input" type="text" placeholder="Lien" [value]="driveId()" (input)="onDriveIdChange($any($event.target).value)" />
         </div>
-        <button class="btn-oauth">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-          Se connecter via OAuth
+        <button (click)="uploadFromDrive()" class="btn-oauth">
+          Synchroniser
         </button>
       }
 
       <!-- URL-specific -->
-      @if (selectedType() === 'url') {
-        <div class="form-group">
-          <label class="form-label">Endpoint API</label>
-          <input class="form-input" type="url" placeholder="https://api.example.com/photos" [value]="apiEndpoint()" (input)="onApiEndpointChange($any($event.target).value)" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Clé API (optionnel)</label>
-          <input class="form-input" type="password" placeholder="••••••••" [value]="apiKey()" (input)="onApiKeyChange($any($event.target).value)" />
-        </div>
-      }
+
 
       <div class="form-actions">
         <button class="btn-cancel" (click)="cancelAddForm()">Annuler</button>

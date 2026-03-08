@@ -1,7 +1,10 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, output, signal, inject, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PhotoSource, Workspace } from '../../models';
+import { PictureService } from '../../services/pictures/picture.service';
+import { IPictureService } from '../../services/pictures/IPictureService';
+import { PICTURE_SERVICE } from '../../core/di-tokens/picture.token';
 
 type SourceType = 'google_drive' | 'dropbox' | 'onedrive' | 'url';
 
@@ -16,6 +19,7 @@ export class SourceManagerComponent {
   workspace = input.required<Workspace>();
   addSource = output<PhotoSource>();
   removeSource = output<string>();
+  private pictureService = inject(PICTURE_SERVICE) as IPictureService;
 
   showAddForm = signal(false);
   selectedType = signal<SourceType>('google_drive');
@@ -36,9 +40,7 @@ export class SourceManagerComponent {
 
   sourceTypes: { value: SourceType; label: string; icon: string }[] = [
     { value: 'google_drive', label: 'Google Drive', icon: '🔵' },
-    { value: 'dropbox', label: 'Dropbox', icon: '📦' },
-    { value: 'onedrive', label: 'OneDrive', icon: '☁️' },
-    { value: 'url', label: 'API / URL', icon: '🔗' },
+    { value: 'onedrive', label: 'OneDrive', icon: '☁️' }
   ];
 
   statusLabels: Record<string, string> = {
@@ -47,6 +49,11 @@ export class SourceManagerComponent {
     syncing: 'Synchronisation...',
     error: 'Erreur',
   };
+
+  uploadFromDrive()
+  {
+    this.pictureService.uploadFromDrive();
+  }
 
   getStatusClass(status: string): string {
     const map: Record<string, string> = {
