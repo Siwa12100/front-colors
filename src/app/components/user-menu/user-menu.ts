@@ -19,13 +19,7 @@ export class UserMenuComponent {
   ) { }
 
   get user() {
-    // TODO : à link
-    //return this.accountService.getUserInfo();
-    return {
-      fullName: 'Monsieur Test',
-      email: 'test@gmail.com',
-      role: 'admin'
-    };
+    return this.accountService.getUserInfo();
   }
 
   toggle() {
@@ -33,8 +27,7 @@ export class UserMenuComponent {
   }
 
   logout() {
-    // TODO : à link
-    //this.accountService.logout();
+    this.accountService.logout();
     this.router.navigateByUrl('/login');
   }
 

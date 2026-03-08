@@ -10,11 +10,11 @@
     <div class="user-popup" (click)="$event.stopPropagation()">
         <div class="user-info">
             <div class="user-avatar">
-                {{ user.fullName.charAt(0).toUpperCase() }}
+                {{ user?.fullName?.charAt(0)?.toUpperCase() }}
             </div>
             <div class="user-details">
-                <span class="user-name">{{ user.fullName }}</span>
-                <span class="user-email">{{ user.email }}</span>
+                <span class="user-name">{{ user?.fullName }}</span>
+                <span class="user-email">{{ user?.email }}</span>
             </div>
         </div>
         <div class="popup-divider"></div>
