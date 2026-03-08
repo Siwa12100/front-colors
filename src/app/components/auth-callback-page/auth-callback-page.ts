@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { WorkspaceWebClient } from '../../core/http/web-clients/workspace.web-client';
+import { AccountService } from '../../services/account-service';
 
 
 @Component({
@@ -13,9 +15,14 @@ export class AuthCallbackPage implements OnInit {
     private router: Router,
   ) { }
 
+  private workspaceClient = inject(WorkspaceWebClient);
+  private accountService = inject(AccountService);
+
+
   ngOnInit(): void {
+
     // Lire les paramètres de l'URL (?token=...&email=...&full_name=...&role=...)
-    this.route.queryParams.subscribe((params: Params) => {
+    this.route.queryParams.subscribe(async (params: Params) => {
       const token = params['token'];
       const user_id = params['user_id'];
       const email = params['email'];
@@ -30,7 +37,12 @@ export class AuthCallbackPage implements OnInit {
         localStorage.setItem('full_name', fullName ?? '');
         localStorage.setItem('role', role ?? '');
 
-        console.log('Connexion réussie ! Token JWT stocké.');
+        // Charge le workspace
+        const userId = Number(params['user_id']);
+        const result = await this.workspaceClient.getAll(userId);
+        if (result?.data?.length) {
+          this.accountService.setWorkspaceId(result.data[0].id);
+        }
 
         // Rediriger vers le tableau de bord (workspace) après connexion
         this.router.navigateByUrl('/home');

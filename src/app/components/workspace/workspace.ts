@@ -11,6 +11,7 @@ import { ImageGallery } from '../image-gallery/image-gallery';
 import { UserMenuComponent } from '../user-menu/user-menu';
 import { WorkspaceWebClient } from '../../core/http/web-clients/workspace.web-client';
 import { FolderService } from '../../services/folders/folder.service';
+import { AccountService } from '../../services/account-service';
 
 @Component({
   selector: 'app-workspace',
@@ -30,6 +31,8 @@ import { FolderService } from '../../services/folders/folder.service';
 })
 export class WorkspaceComponent implements OnInit {
   svc = inject(WorkspaceService);
+
+  private accountService = inject(AccountService);
   private folderService = inject(FolderService);
   private workspaceClient = inject(WorkspaceWebClient);
 
@@ -39,7 +42,7 @@ export class WorkspaceComponent implements OnInit {
   viewMode = signal<'grid' | 'masonry'>('grid');
   folders = signal<Folder[]>([]);
 
-  private readonly workspaceId = 1; // TODO a remplacer qd on aura link l'authentification
+  private readonly workspaceId = this.accountService.getWorkspaceId() ?? 1;
 
   ngOnInit() {
     this.loadFolders();
