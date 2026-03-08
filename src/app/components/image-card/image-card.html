@@ -1,13 +1,13 @@
 <article class="image-card" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-  <a class="card-image-link" [href]="photo().url" target="_blank"
-    (click)="$event.preventDefault(); openDetail.emit(photo())" [attr.aria-label]="'Voir ' + photo().name">
+  <div class="card-image-link" (click)="openDetail.emit(photo())"
+    (dragstart)="$event.preventDefault(); $event.stopPropagation()" [attr.aria-label]="'Voir ' + photo().name">
     <!-- Skeleton loader -->
     @if (!loaded()) {
     <div class="skeleton"></div>
     }
 
-    <img [src]="photo().thumbnailLink" [alt]="photo().name" class="card-image" [class.loaded]="loaded()"
-      (load)="onImageLoad()" loading="lazy" (error)="onImageError($event)" />
+    <img draggable="false" [src]="photo().thumbnailLink" [alt]="photo().name" class="card-image"
+      [class.loaded]="loaded()" (load)="onImageLoad()" loading="lazy" (error)="onImageError($event)" />
 
     <!-- Overlay on hover -->
     <div class="card-overlay" [class.visible]="hovered()">
@@ -34,10 +34,10 @@
         </div>
       </div>
     </div>
-  </a>
+  </div>
 
   <div class="card-footer">
     <span class="photo-name" [title]="photo().name">{{ photo().name }}</span>
-    <span class="photo-dims">{{ photo().width }}×{{ photo().height }}</span>
+    <app-image-card-menu [photo]="photo()" (moveToFolder)="moveToFolder.emit($any($event))" />
   </div>
 </article>

@@ -5,10 +5,12 @@ import { mapFolder } from '../../mappers/folder.mapper';
 import { mapPicture } from '../../mappers/picture.mapper';
 import { mapPagination } from '../../mappers/pagination.mapper';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class FolderService implements IFolderService {
 
-  constructor(private readonly client: FolderWebClient) {}
+  constructor(private readonly client: FolderWebClient) { }
 
   async getById(id: number) {
     const dto = await this.client.getById(id);
@@ -49,5 +51,13 @@ export class FolderService implements IFolderService {
 
   async delete(id: number) {
     await this.client.delete(id);
+  }
+
+  async addPicture(folderId: number, currentPictureIds: number[], newPictureId: number) {
+    const dto = await this.client.update(folderId, {
+      pictures: [...currentPictureIds, newPictureId]
+    });
+    if (!dto) throw new Error('Failed to add picture to folder');
+    return mapFolder(dto);
   }
 }
