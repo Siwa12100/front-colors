@@ -12,7 +12,7 @@ export class HomePage {
   constructor(
     private accountService: AccountService,
     private router: Router,
-  ) {}
+  ) { }
 
   get isLoggedIn(): boolean {
     return this.accountService.isLoggedIn();
