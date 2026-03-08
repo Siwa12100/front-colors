@@ -1,6 +1,6 @@
 import { Component, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ImagesService } from '../../services/images-service';
+import { WorkspaceWebClient } from '../../core/http/web-clients/workspace.web-client';
 import { ImageCardComponent } from '../image-card/image-card';
 import { Photo } from '../../models';
 
@@ -16,13 +16,13 @@ export class ImageGallery implements OnInit {
   loading = signal(false);
   error = signal('');
 
-  constructor(private imagesService: ImagesService) { }
+  constructor(private workspaceClient: WorkspaceWebClient) { }
 
   async ngOnInit() {
     this.loading.set(true);
     try {
-      const { data } = await this.imagesService.getImagesByWorkspace();
-      this.photos.set(data as Photo[]);
+      const result = await this.workspaceClient.getPictures(1); // TODO: workspace id dynamique
+      this.photos.set((result?.data ?? []) as unknown as Photo[]);
     } catch (err: any) {
       this.error.set(err.message);
     } finally {
