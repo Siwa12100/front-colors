@@ -118,6 +118,37 @@
   &:disabled { opacity: 0.3; cursor: not-allowed; }
 }
 
+.btn-favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  svg { width: 17px; height: 17px; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+  &:hover {
+    border-color: #F59E0B;
+    color: #F59E0B;
+    background: rgba(245, 158, 11, 0.08);
+    svg { transform: scale(1.15); }
+  }
+
+  &.active {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: #F59E0B;
+    color: #F59E0B;
+    svg { transform: scale(1.1); }
+  }
+}
+
 .btn-download, .btn-details {
   display: flex;
   align-items: center;

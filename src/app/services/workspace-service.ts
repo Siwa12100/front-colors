@@ -5,7 +5,7 @@ import { Photo, Folder, Workspace, PhotoSource, SearchFilters } from '../models'
 export class WorkspaceService {
   private _workspaces = signal<Workspace[]>(MOCK_WORKSPACES);
   private _photos = signal<Photo[]>(MOCK_PHOTOS);
-  private _folders = signal<Folder[]>([]);
+  private _folders = signal<Folder[]>(MOCK_FOLDERS);
   private _activeWorkspaceId = signal<string>('ws-1');
   private _searchQuery = signal<string>('');
   private _filters = signal<SearchFilters>({ tags: [], mimeTypes: [], sources: [] });
@@ -131,6 +131,7 @@ export class WorkspaceService {
       createdAt: new Date(),
       photoIds: [],
       folderIds: [],
+      favorites: [],
       sources: []
     };
     this._workspaces.update(list => [...list, ws]);
@@ -142,6 +143,33 @@ export class WorkspaceService {
       photos.map(p => p.id === photoId ? { ...p, folderId } : p)
     );
   }
+
+  toggleFavorite(photoId: string) {
+    const wsId = this._activeWorkspaceId();
+    this._workspaces.update(workspaces =>
+      workspaces.map(w => {
+        if (w.id !== wsId) return w;
+        const isFav = w.favorites.includes(photoId);
+        return {
+          ...w,
+          favorites: isFav
+            ? w.favorites.filter(id => id !== photoId)
+            : [...w.favorites, photoId]
+        };
+      })
+    );
+  }
+
+  isFavorite(photoId: string): boolean {
+    const ws = this.activeWorkspace();
+    return ws?.favorites.includes(photoId) ?? false;
+  }
+
+  readonly workspaceFavorites = computed(() => {
+    const ws = this.activeWorkspace();
+    if (!ws) return [];
+    return this._photos().filter(p => ws.favorites.includes(p.id));
+  });
 }
 
 const FOLDER_COLORS = ['#D97706', '#7C3AED', '#059669', '#DC2626', '#2563EB'];
@@ -237,6 +265,7 @@ const MOCK_WORKSPACES: Workspace[] = [
     id: 'ws-1', name: 'Projet Nature', description: 'Photos de paysages et nature sauvage',
     createdAt: new Date('2024-01-15'), photoIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'],
     folderIds: ['f1', 'f2'],
+    favorites: [],
     coverPhotoUrl: 'https://picsum.photos/seed/mountain/400/300',
     sources: [
       { id: 's1', type: 'google_drive', label: 'Drive Pro', config: { folderId: 'gf1', folderName: 'Photos Nature' }, status: 'connected', lastSync: new Date(), photoCount: 247 },
@@ -247,6 +276,7 @@ const MOCK_WORKSPACES: Workspace[] = [
     id: 'ws-2', name: 'Lifestyle & Food', description: 'Photos culinaires et style de vie',
     createdAt: new Date('2024-02-01'), photoIds: ['p7', 'p8'],
     folderIds: [],
+    favorites: [],
     coverPhotoUrl: 'https://picsum.photos/seed/coffee/400/300',
     sources: [
       { id: 's3', type: 'url', label: 'API Unsplash', config: { endpoint: 'https://api.unsplash.com' }, status: 'connected', photoCount: 512 }
@@ -256,6 +286,7 @@ const MOCK_WORKSPACES: Workspace[] = [
     id: 'ws-3', name: 'Architecture', description: 'Photographies architecturales',
     createdAt: new Date('2024-03-05'), photoIds: [],
     folderIds: [],
+    favorites: [],
     coverPhotoUrl: 'https://picsum.photos/seed/city/400/300',
     sources: []
   },

@@ -38,6 +38,7 @@ export interface Workspace {
   folderIds: string[];
   sources: PhotoSource[];
   coverPhotoUrl?: string;
+  favorites: string[];
 }
 
 export interface PhotoSource {

@@ -1,19 +1,26 @@
 <article class="image-card" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-  <div class="card-image-link" (click)="openDetail.emit(photo())"
-    (dragstart)="$event.preventDefault(); $event.stopPropagation()" [attr.aria-label]="'Voir ' + photo().name">
+  <a class="card-image-link" [href]="photo().url" target="_blank"
+    (click)="$event.preventDefault(); openDetail.emit(photo())" [attr.aria-label]="'Voir ' + photo().name">
     <!-- Skeleton loader -->
     @if (!loaded()) {
     <div class="skeleton"></div>
     }
 
-    <img draggable="false" [src]="photo().thumbnailLink" [alt]="photo().name" class="card-image"
-      [class.loaded]="loaded()" (load)="onImageLoad()" loading="lazy" (error)="onImageError($event)" />
+    <img [src]="photo().thumbnailLink" [alt]="photo().name" class="card-image" [class.loaded]="loaded()"
+      (load)="onImageLoad()" loading="lazy" (error)="onImageError($event)" />
 
     <!-- Overlay on hover -->
     <div class="card-overlay" [class.visible]="hovered()">
       <div class="overlay-top">
         <span class="photo-format">{{ (photo().name.match(/\.(\w+)$/)?.[1] ?? 'unknown').toUpperCase() }}</span>
-        <span class="photo-size">{{ formatSize(photo().size) }}</span>
+        <div class="overlay-top-right">
+          <button class="card-fav-btn" [class.active]="isFavorite()" (click)="toggleFavorite($event)" [title]="isFavorite() ? 'Retirer des favoris' : 'Ajouter aux favoris'">
+            <svg viewBox="0 0 24 24" [attr.fill]="isFavorite() ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2.5">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </button>
+          <span class="photo-size">{{ formatSize(photo().size) }}</span>
+        </div>
       </div>
 
       <div class="overlay-center">
@@ -34,10 +41,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </a>
 
   <div class="card-footer">
     <span class="photo-name" [title]="photo().name">{{ photo().name }}</span>
-    <app-image-card-menu [photo]="photo()" (moveToFolder)="moveToFolder.emit($any($event))" />
+    <span class="photo-dims">{{ photo().width }}×{{ photo().height }}</span>
   </div>
 </article>
