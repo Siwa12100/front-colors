@@ -40,8 +40,6 @@ export class AuthCallbackPage implements OnInit {
         localStorage.setItem('workspace_id', workspace_id ?? '');
 
         // Charge le workspace
-        const userId = Number(params['user_id']);
-        const result = await this.workspaceClient.getAll(userId);
         const workspaceId = params['workspace_id'];
         if (workspaceId) {
           this.accountService.setWorkspaceId(Number(workspaceId));
