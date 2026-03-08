@@ -28,6 +28,7 @@ export class AuthCallbackPage implements OnInit {
       const email = params['email'];
       const fullName = params['full_name'];
       const role = params['role'];
+      const workspace_id = params['workspace_id'];
 
       if (token) {
         // Stocker le token JWT et les infos utilisateur dans localStorage
@@ -36,15 +37,14 @@ export class AuthCallbackPage implements OnInit {
         localStorage.setItem('email', email ?? '');
         localStorage.setItem('full_name', fullName ?? '');
         localStorage.setItem('role', role ?? '');
+        localStorage.setItem('workspace_id', workspace_id ?? '');
 
         // Charge le workspace
         const userId = Number(params['user_id']);
         const result = await this.workspaceClient.getAll(userId);
-        console.log("USER : " + userId)
-        console.log("RESULT : " + result)
-        if (result?.data?.length) {
-          console.log("WORSKPACE : " + result.data[0].id)
-          this.accountService.setWorkspaceId(result.data[0].id);
+        const workspaceId = params['workspace_id'];
+        if (workspaceId) {
+          this.accountService.setWorkspaceId(Number(workspaceId));
         }
 
         // Rediriger vers le tableau de bord (workspace) après connexion
