@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AccountService {
 
   private readonly apiBaseUrl = environment.apiBaseUrl;
@@ -26,6 +27,7 @@ export class AccountService {
     }
     return true;
   }
+
 
   /** Redirige le navigateur vers le backend pour lancer le flux Google OAuth */
   public loginWithGoogle(): void {

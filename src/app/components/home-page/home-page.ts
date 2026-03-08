@@ -6,7 +6,6 @@ import { AccountService } from '../../services/account-service';
   selector: 'app-home-page',
   imports: [],
   templateUrl: './home-page.html',
-  styleUrl: './home-page.css',
 })
 export class HomePage {
 
