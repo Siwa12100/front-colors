@@ -43,10 +43,12 @@ export class AccountService {
   }
 
   /** Retourne les infos utilisateur stockées lors du callback */
-  public getUserInfo(): { email: string; fullName: string; role: string } | null {
+  public getUserInfo(): { user_id: string; email: string; fullName: string; role: string } | null {
+    const user_id = localStorage.getItem('user_id');
     const email = localStorage.getItem('email');
-    if (!email) return null;
+    if (!email || !user_id) return null;
     return {
+      user_id,
       email,
       fullName: localStorage.getItem('full_name') ?? '',
       role: localStorage.getItem('role') ?? '',
@@ -56,6 +58,7 @@ export class AccountService {
   /** Déconnecte l'utilisateur (supprime les données du localStorage) */
   public logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
     localStorage.removeItem('email');
     localStorage.removeItem('full_name');
     localStorage.removeItem('role');

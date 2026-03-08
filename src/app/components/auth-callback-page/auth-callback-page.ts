@@ -17,6 +17,7 @@ export class AuthCallbackPage implements OnInit {
     // Lire les paramètres de l'URL (?token=...&email=...&full_name=...&role=...)
     this.route.queryParams.subscribe((params: Params) => {
       const token = params['token'];
+      const user_id = params['user_id'];
       const email = params['email'];
       const fullName = params['full_name'];
       const role = params['role'];
@@ -24,6 +25,7 @@ export class AuthCallbackPage implements OnInit {
       if (token) {
         // Stocker le token JWT et les infos utilisateur dans localStorage
         localStorage.setItem('token', token);
+        localStorage.setItem('user_id', user_id ?? '');
         localStorage.setItem('email', email ?? '');
         localStorage.setItem('full_name', fullName ?? '');
         localStorage.setItem('role', role ?? '');
