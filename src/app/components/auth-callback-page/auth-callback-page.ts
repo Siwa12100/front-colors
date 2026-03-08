@@ -1,7 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { WorkspaceWebClient } from '../../core/http/web-clients/workspace.web-client';
-import { AccountService } from '../../services/account-service';
 
 
 @Component({
@@ -14,10 +12,6 @@ export class AuthCallbackPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) { }
-
-  private workspaceClient = inject(WorkspaceWebClient);
-  private accountService = inject(AccountService);
-
 
   ngOnInit(): void {
 
@@ -38,12 +32,6 @@ export class AuthCallbackPage implements OnInit {
         localStorage.setItem('full_name', fullName ?? '');
         localStorage.setItem('role', role ?? '');
         localStorage.setItem('workspace_id', workspace_id ?? '');
-
-        // Charge le workspace
-        const workspaceId = params['workspace_id'];
-        if (workspaceId) {
-          this.accountService.setWorkspaceId(Number(workspaceId));
-        }
 
         // Rediriger vers le tableau de bord (workspace) après connexion
         this.router.navigateByUrl('/home');
