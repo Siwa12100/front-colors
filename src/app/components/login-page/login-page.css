@@ -1,25 +1,36 @@
-body {
-    background-color: #f9ffe4;
-}
-
 .displayFlex {
     display: flex;
     flex-direction: column;
     align-items: center;
-    align-content: center;
+    justify-content: center;
+    min-height: 60vh;
 }
 
 h1 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-bottom: 32px;
 }
 
-a{
-    text-decoration: underline;
+.btn-google {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #3c4043;
+    background-color: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
     cursor: pointer;
-    color: black;
-    margin: 15%;
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
 
-.error{
-    background-color: red;
+.btn-google:hover {
+    background-color: #f7f8f8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.btn-google svg {
+    flex-shrink: 0;
 }
