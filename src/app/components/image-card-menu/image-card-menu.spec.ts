@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImageCard } from './image-card';
+import { ImageCardMenu } from './image-card-menu';
 
-describe('ImageCard', () => {
-  let component: ImageCard;
-  let fixture: ComponentFixture<ImageCard>;
+describe('ImageCardMenu', () => {
+  let component: ImageCardMenu;
+  let fixture: ComponentFixture<ImageCardMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ImageCard]
+      imports: [ImageCardMenu]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(ImageCard);
+    fixture = TestBed.createComponent(ImageCardMenu);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

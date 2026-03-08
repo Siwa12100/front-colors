@@ -2,7 +2,7 @@
   /*border: 1px solid var(--text-primary);*/
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .folder-header {
@@ -14,7 +14,9 @@
   transition: background 0.2s;
   user-select: none;
 
-  &:hover { background: var(--surface-1); }
+  &:hover {
+    background: var(--surface-1);
+  }
 }
 
 .folder-left {
@@ -29,7 +31,9 @@
   color: var(--text-primary);
   transition: transform 0.2s;
 
-  &.open { transform: rotate(90deg); }
+  &.open {
+    transform: rotate(90deg);
+  }
 }
 
 .folder-icon {
@@ -52,7 +56,13 @@
   padding: 1px 7px;
 }
 
-.btn-add-sub {
+.folder-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-folder-action {
   background: none;
   border: 1px solid var(--accent);
   color: var(--text-primary);
@@ -65,7 +75,10 @@
   cursor: pointer;
   transition: all 0.2s;
 
-  svg { width: 13px; height: 13px; }
+  svg {
+    width: 13px;
+    height: 13px;
+  }
 
   &:hover {
     background: var(--accent);
@@ -83,14 +96,18 @@
 
 .sub-input {
   flex: 1;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--accent);
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 13px;
   padding: 6px 10px;
   font-family: 'DM Sans', sans-serif;
-  &:focus { outline: none; border-color: var(--accent); }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
 }
 
 .btn-confirm {
@@ -111,12 +128,15 @@
   font-size: 18px;
   cursor: pointer;
   padding: 0 4px;
-  &:hover { color: var(--accent-light); }
+
+  &:hover {
+    color: var(--accent-light);
+  }
 }
 
 .folder-content {
   padding: 12px 16px;
-  border-top: 1px solid rgba(255,255,255,0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -124,7 +144,7 @@
 
 .sub-folder-wrap {
   padding-left: 16px;
-  border-left: 1px solid rgba(255,255,255,0.06);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .folder-photos-grid {
@@ -146,4 +166,9 @@
     width: 28px;
     height: 28px;
   }
+}
+
+.folder-header.drag-over {
+  background: var(--accent);
+  opacity: 0.8;
 }

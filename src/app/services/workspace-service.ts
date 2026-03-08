@@ -5,7 +5,7 @@ import { Photo, Folder, Workspace, PhotoSource, SearchFilters } from '../models'
 export class WorkspaceService {
   private _workspaces = signal<Workspace[]>(MOCK_WORKSPACES);
   private _photos = signal<Photo[]>(MOCK_PHOTOS);
-  private _folders = signal<Folder[]>(MOCK_FOLDERS);
+  private _folders = signal<Folder[]>([]);
   private _activeWorkspaceId = signal<string>('ws-1');
   private _searchQuery = signal<string>('');
   private _filters = signal<SearchFilters>({ tags: [], mimeTypes: [], sources: [] });

@@ -1,0 +1,25 @@
+<div class="card-menu-wrap">
+    <button class="btn-card-menu" (click)="toggle($event); $event.stopPropagation()">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+        </svg>
+    </button>
+
+    <!-- @if (open()) {
+    <div class="card-menu" (click)="$event.stopPropagation()"> -->
+    @if (open()) {
+    <div class="card-menu" [style.left.px]="pos()!.x" [style.top.px]="pos()!.y" (click)="$event.stopPropagation()">
+        <button class="card-menu-item" (click)="onMoveToFolder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+            </svg>
+            Déplacer vers un dossier
+        </button>
+    </div>
+    }
+    @if (showPicker()) {
+    <app-folder-picker-modal (close)="showPicker.set(false)" (folderSelected)="onFolderSelected($event)" />
+    }
+</div>

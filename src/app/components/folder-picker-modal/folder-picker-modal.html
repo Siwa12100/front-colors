@@ -1,0 +1,42 @@
+<div class="picker-backdrop" (click)="close.emit()">
+    <div class="picker-modal" (click)="$event.stopPropagation()">
+        <div class="picker-header">
+            <h3>Choisir un dossier</h3>
+            <button class="picker-close" (click)="close.emit()">×</button>
+        </div>
+        <div class="picker-body">
+            @for (folder of folders(); track folder.id) {
+            <ng-container *ngTemplateOutlet="folderNode; context: { folder: folder, depth: 0 }" />
+            }
+        </div>
+    </div>
+</div>
+
+<ng-template #folderNode let-folder="folder" let-depth="depth">
+    <div class="picker-node" [style.padding-left.px]="16 + depth * 16">
+        <div class="picker-node-row">
+            <button class="picker-chevron" (click)="toggleExpand(folder)">
+                @if (expanded().has(+folder.id)) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+                } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+                }
+            </button>
+            <button class="picker-folder-btn" (click)="select(folder)">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #D97706">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                </svg>
+                {{ folder.name }}
+            </button>
+        </div>
+        @if (expanded().has(+folder.id) && folder.children?.length) {
+        @for (child of folder.children; track child.id) {
+        <ng-container *ngTemplateOutlet="folderNode; context: { folder: child, depth: depth + 1 }" />
+        }
+        }
+    </div>
+</ng-template>
