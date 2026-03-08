@@ -2,7 +2,8 @@ export interface Photo {
   id: string;
   name: string;
   url: string;
-  thumbnailUrl: string;
+  downloadLink: string;
+  thumbnailLink: string;
   tags: string[];
   size: number; // bytes
   width: number;

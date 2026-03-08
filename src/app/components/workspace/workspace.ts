@@ -8,6 +8,7 @@ import { ImageDetailPageComponent } from '../image-detail-page/image-detail-page
 import { FolderComponent } from '../folder/folder';
 import { SearchBarComponent } from '../search-bar/search-bar';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { ImageGallery } from '../image-gallery/image-gallery';
 
 @Component({
   selector: 'app-workspace',
@@ -19,7 +20,8 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
     ImageDetailPageComponent,
     FolderComponent,
     SearchBarComponent,
-    WorkspaceSidebarComponent
+    WorkspaceSidebarComponent,
+    ImageGallery
   ],
   templateUrl: './workspace.html',
   styleUrls: ['./workspace.css']

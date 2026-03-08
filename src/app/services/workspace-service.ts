@@ -149,75 +149,75 @@ const FOLDER_COLORS = ['#D97706', '#7C3AED', '#059669', '#DC2626', '#2563EB'];
 const MOCK_PHOTOS: Photo[] = [
   {
     id: 'p1', name: 'Montagne dorée.jpg', url: 'https://picsum.photos/seed/mountain/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/mountain/400/300',
+    thumbnailLink: 'https://picsum.photos/seed/mountain/400/300',
     tags: ['nature', 'montagne', 'paysage', 'doré'], size: 2400000,
     width: 1200, height: 800, mimeType: 'image/jpeg',
     createdAt: new Date('2024-03-15'), modifiedAt: new Date('2024-03-15'),
     source: { id: 's1', type: 'google_drive', label: 'Drive Pro', config: { folderId: 'gf1', folderName: 'Photos Nature' }, status: 'connected' },
-    workspaceId: 'ws-1'
+    workspaceId: 'ws-1', downloadLink: 'https://google.com'
   },
   {
     id: 'p2', name: 'Architecture urbaine.jpg', url: 'https://picsum.photos/seed/city/1200/900',
-    thumbnailUrl: 'https://picsum.photos/seed/city/400/300',
+    thumbnailLink: 'https://picsum.photos/seed/city/400/300',
     tags: ['architecture', 'urbain', 'noir et blanc'], size: 3100000,
     width: 1200, height: 900, mimeType: 'image/jpeg',
     createdAt: new Date('2024-04-01'), modifiedAt: new Date('2024-04-01'),
     source: { id: 's1', type: 'google_drive', label: 'Drive Pro', config: { folderId: 'gf1', folderName: 'Photos Nature' }, status: 'connected' },
-    workspaceId: 'ws-1'
+    workspaceId: 'ws-1', downloadLink: 'https://google.com'
   },
   {
     id: 'p3', name: 'Portrait lumière.jpg', url: 'https://picsum.photos/seed/portrait/900/1200',
-    thumbnailUrl: 'https://picsum.photos/seed/portrait/300/400',
+    thumbnailLink: 'https://picsum.photos/seed/portrait/300/400',
     tags: ['portrait', 'lumière', 'studio'], size: 1800000,
     width: 900, height: 1200, mimeType: 'image/jpeg',
     createdAt: new Date('2024-04-10'), modifiedAt: new Date('2024-04-10'),
     source: { id: 's1', type: 'google_drive', label: 'Drive Pro', config: { folderId: 'gf1', folderName: 'Photos Nature' }, status: 'connected' },
-    workspaceId: 'ws-1'
+    workspaceId: 'ws-1', downloadLink: 'https://google.com'
   },
   {
     id: 'p4', name: 'Forêt mystique.jpg', url: 'https://picsum.photos/seed/forest/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/forest/400/300',
+    thumbnailLink: 'https://picsum.photos/seed/forest/400/300',
     tags: ['nature', 'forêt', 'brume'], size: 2900000,
     width: 1200, height: 800, mimeType: 'image/jpeg',
     createdAt: new Date('2024-04-20'), modifiedAt: new Date('2024-04-20'),
     source: { id: 's2', type: 'google_drive', label: 'Drive Personnel', config: { folderId: 'gf2', folderName: 'Voyages' }, status: 'connected' },
-    workspaceId: 'ws-1'
+    workspaceId: 'ws-1', downloadLink: 'https://google.com'
   },
   {
     id: 'p5', name: 'Ocean bleu.jpg', url: 'https://picsum.photos/seed/ocean/1400/900',
-    thumbnailUrl: 'https://picsum.photos/seed/ocean/400/260',
+    thumbnailLink: 'https://picsum.photos/seed/ocean/400/260',
     tags: ['mer', 'nature', 'paysage', 'bleu'], size: 3400000,
     width: 1400, height: 900, mimeType: 'image/jpeg',
     createdAt: new Date('2024-05-01'), modifiedAt: new Date('2024-05-01'),
     source: { id: 's2', type: 'google_drive', label: 'Drive Personnel', config: { folderId: 'gf2', folderName: 'Voyages' }, status: 'connected' },
-    workspaceId: 'ws-1'
+    workspaceId: 'ws-1', downloadLink: 'https://google.com'
   },
   {
     id: 'p6', name: 'Abstract rouge.png', url: 'https://picsum.photos/seed/abstract/1000/1000',
-    thumbnailUrl: 'https://picsum.photos/seed/abstract/300/300',
+    thumbnailLink: 'https://picsum.photos/seed/abstract/300/300',
     tags: ['art', 'abstrait', 'rouge'], size: 4100000,
     width: 1000, height: 1000, mimeType: 'image/png',
     createdAt: new Date('2024-05-12'), modifiedAt: new Date('2024-05-12'),
     source: { id: 's1', type: 'google_drive', label: 'Drive Pro', config: { folderId: 'gf1', folderName: 'Photos Nature' }, status: 'connected' },
-    workspaceId: 'ws-1'
+    workspaceId: 'ws-1', downloadLink: 'https://google.com'
   },
   {
     id: 'p7', name: 'Café matin.jpg', url: 'https://picsum.photos/seed/coffee/800/600',
-    thumbnailUrl: 'https://picsum.photos/seed/coffee/400/300',
+    thumbnailLink: 'https://picsum.photos/seed/coffee/400/300',
     tags: ['lifestyle', 'café', 'matin'], size: 1200000,
     width: 800, height: 600, mimeType: 'image/jpeg',
     createdAt: new Date('2024-05-20'), modifiedAt: new Date('2024-05-20'),
     source: { id: 's1', type: 'google_drive', label: 'Drive Pro', config: { folderId: 'gf1', folderName: 'Photos Nature' }, status: 'connected' },
-    workspaceId: 'ws-2'
+    workspaceId: 'ws-2', downloadLink: 'https://google.com'
   },
   {
     id: 'p8', name: 'Sunset tropical.jpg', url: 'https://picsum.photos/seed/sunset/1600/900',
-    thumbnailUrl: 'https://picsum.photos/seed/sunset/400/225',
+    thumbnailLink: 'https://picsum.photos/seed/sunset/400/225',
     tags: ['coucher de soleil', 'tropical', 'paysage'], size: 5200000,
     width: 1600, height: 900, mimeType: 'image/jpeg',
     createdAt: new Date('2024-06-01'), modifiedAt: new Date('2024-06-01'),
     source: { id: 's3', type: 'url', label: 'API Unsplash', config: { endpoint: 'https://api.unsplash.com' }, status: 'connected' },
-    workspaceId: 'ws-2'
+    workspaceId: 'ws-2', downloadLink: 'https://google.com'
   },
 ];
 
@@ -235,8 +235,8 @@ const MOCK_FOLDERS: Folder[] = [
 const MOCK_WORKSPACES: Workspace[] = [
   {
     id: 'ws-1', name: 'Projet Nature', description: 'Photos de paysages et nature sauvage',
-    createdAt: new Date('2024-01-15'), photoIds: ['p1','p2','p3','p4','p5','p6'],
-    folderIds: ['f1','f2'],
+    createdAt: new Date('2024-01-15'), photoIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'],
+    folderIds: ['f1', 'f2'],
     coverPhotoUrl: 'https://picsum.photos/seed/mountain/400/300',
     sources: [
       { id: 's1', type: 'google_drive', label: 'Drive Pro', config: { folderId: 'gf1', folderName: 'Photos Nature' }, status: 'connected', lastSync: new Date(), photoCount: 247 },
@@ -245,7 +245,7 @@ const MOCK_WORKSPACES: Workspace[] = [
   },
   {
     id: 'ws-2', name: 'Lifestyle & Food', description: 'Photos culinaires et style de vie',
-    createdAt: new Date('2024-02-01'), photoIds: ['p7','p8'],
+    createdAt: new Date('2024-02-01'), photoIds: ['p7', 'p8'],
     folderIds: [],
     coverPhotoUrl: 'https://picsum.photos/seed/coffee/400/300',
     sources: [
