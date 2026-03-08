@@ -1,10 +1,11 @@
-.login-page {
+.landing {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   overflow: hidden;
+  /* Dégradé reprenant les variables du thème */
   background: linear-gradient(135deg, #ffc5ff 0%, #e4b1f1 40%, #c084fc 100%);
 }
 
@@ -43,7 +44,7 @@
 }
 
 /* ---------- Carte centrale ---------- */
-.login-card {
+.landing-card {
   position: relative;
   z-index: 1;
   display: flex;
@@ -86,21 +87,21 @@
 }
 
 /* ---------- Textes ---------- */
-.login-title {
+.landing-title {
   font-family: 'DM Serif Display', serif;
-  font-size: 36px;
+  font-size: 44px;
   color: #1a1a1a;
   letter-spacing: -0.03em;
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 }
 
-.login-subtitle {
+.landing-subtitle {
   font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
-  color: rgba(0, 0, 0, 0.55);
-  margin: 0 0 32px;
-  max-width: 300px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 0 36px;
+  max-width: 320px;
 }
 
 /* ---------- Bouton Google ---------- */
@@ -134,16 +135,12 @@
   flex-shrink: 0;
 }
 
-/* ---------- Lien retour ---------- */
-.back-link {
-  margin-top: 28px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  color: rgba(0, 0, 0, 0.45);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.back-link:hover {
-  color: #1a1a1a;
+/* ---------- Footer ---------- */
+.landing-footer {
+  margin-top: 40px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.35);
 }

@@ -32,8 +32,8 @@ export class AuthCallbackPage implements OnInit {
 
         console.log('Connexion réussie ! Token JWT stocké.');
 
-        // Rediriger vers la page d'accueil
-        this.router.navigateByUrl('/');
+        // Rediriger vers le tableau de bord (workspace) après connexion
+        this.router.navigateByUrl('/home');
       } else {
         // Pas de token = erreur, retour au login
         const error = params['error'];
