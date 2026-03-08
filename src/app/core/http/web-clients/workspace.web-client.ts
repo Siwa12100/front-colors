@@ -9,7 +9,7 @@ import { FolderDto } from '../../../dtos/folder.dto';
 export class WorkspaceWebClient {
   private readonly route = '/api/workspaces';
 
-  constructor(private readonly base: BaseWebClient) {}
+  constructor(private readonly base: BaseWebClient) { }
 
   async getAll(
     userId: number,

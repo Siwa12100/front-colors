@@ -9,7 +9,7 @@ import { mapPagination } from '../../mappers/pagination.mapper';
 @Injectable()
 export class WorkspaceService implements IWorkspaceService {
 
-  constructor(private readonly client: WorkspaceWebClient) {}
+  constructor(private readonly client: WorkspaceWebClient) { }
 
   async getAll(userId: number, page = 1, perPage = 20) {
     const dto = await this.client.getAll(userId, page, perPage);
