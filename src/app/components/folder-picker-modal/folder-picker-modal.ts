@@ -2,6 +2,7 @@ import { Component, input, output, signal, inject, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common';
 import { Folder } from '../../models';
 import { WorkspaceWebClient } from '../../core/http/web-clients/workspace.web-client';
+import { AccountService } from '../../services/account-service';
 
 @Component({
   selector: 'app-folder-picker-modal',
@@ -15,10 +16,11 @@ export class FolderPickerModalComponent implements OnInit {
   folderSelected = output<Folder>();
 
   private workspaceClient = inject(WorkspaceWebClient);
+  private accountService = inject(AccountService);
 
   folders = signal<Folder[]>([]);
   expanded = signal<Set<number>>(new Set());
-  private readonly workspaceId = 1;
+  private readonly workspaceId = this.accountService.getWorkspaceId() ?? 1;
 
   async ngOnInit() {
     try {

@@ -57,6 +57,15 @@ export class AccountService {
     };
   }
 
+  public getWorkspaceId(): number | null {
+    const id = localStorage.getItem('workspace_id');
+    return id ? Number(id) : null;
+  }
+
+  public setWorkspaceId(id: number): void {
+    localStorage.setItem('workspace_id', String(id));
+  }
+
   /** Déconnecte l'utilisateur (supprime les données du localStorage) */
   public logout(): void {
     localStorage.removeItem('token');

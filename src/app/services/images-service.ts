@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Photo } from '../models';
+import { AccountService } from './account-service';
 
 export interface PaginatedPictures {
   data: Photo[];
@@ -11,10 +12,10 @@ export interface PaginatedPictures {
   providedIn: 'root',
 })
 export class ImagesService {
+  private accountService = inject(AccountService);
 
   private readonly apiBaseUrl = environment.apiBaseUrl;
-  // TODO : temporaire en attendant de link la branche de connexion avec celle-ci
-  private readonly workspaceId = 1;
+  private readonly workspaceId = this.accountService.getWorkspaceId() ?? 1;
 
   private getAuthHeaders(): HeadersInit {
     const token = localStorage.getItem('token');
