@@ -12,29 +12,27 @@ import { AccountService } from '../../services/account-service';
   styleUrl: './login-page.css',
 })
 export class LoginPage {
-  
-  accountService : AccountService = new AccountService()
-  username : string = ""
-  password : string = ""
+
+  accountService: AccountService = new AccountService()
+  username: string = ""
+  password: string = ""
   errorMessage = ""
   hid = true
 
-  constructor(private router : Router){}
+  constructor(private router: Router) { }
 
-  connexionForm : FormGroup = new FormGroup({
-    user : new FormControl(this.username, Validators.required),
-    passwd : new FormControl(this.password, Validators.required)
+  connexionForm: FormGroup = new FormGroup({
+    user: new FormControl(this.username, Validators.required),
+    passwd: new FormControl(this.password, Validators.required)
   });
-  
-  ngOnInit() : void
-  {
-    this.connexionForm.get('user')?.valueChanges.subscribe(value=>{this.username=value})
-    this.connexionForm.get('passwd')?.valueChanges.subscribe(value=>{this.password=value})
+
+  ngOnInit(): void {
+    this.connexionForm.get('user')?.valueChanges.subscribe(value => { this.username = value })
+    this.connexionForm.get('passwd')?.valueChanges.subscribe(value => { this.password = value })
   }
 
 
-  async loginUser()
-  {
+  async loginUser() {
     // TODO fonction de connection 
     const result = await this.accountService.loginUser(this.username, this.password);
 
@@ -45,8 +43,7 @@ export class LoginPage {
     // {
     //   this.errorMessage = res.message
     // }
-    if (0)
-    {
+    if (0) {
       //TODO remove this part when connexion implem
     }
     else {
@@ -54,15 +51,14 @@ export class LoginPage {
       this.errorMessage = ""
     }
 
-    if (this.errorMessage == "")
-    {
+    if (this.errorMessage == "") {
       // TODO DECOMMENT, allows to store the token localStorage.setItem("token", res.param.token)
       this.router.navigateByUrl('/main')
       return
     }
 
     else {
-      this.hid=false;
+      this.hid = false;
       return
     }
 

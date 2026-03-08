@@ -1,0 +1,125 @@
+.user-menu-wrap {
+    position: relative;
+}
+
+.user-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.user-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.user-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Popup */
+.user-popup {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 240px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+    overflow: hidden;
+    animation: popup-in 0.15s ease;
+}
+
+@keyframes popup-in {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #D97706;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-email {
+    font-size: 12px;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.popup-divider {
+    height: 1px;
+    background: #f0f0f0;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #e63946;
+    transition: background 0.15s;
+}
+
+.logout-btn:hover {
+    background: #fff5f5;
+}
+
+.logout-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: #e63946;
+}
