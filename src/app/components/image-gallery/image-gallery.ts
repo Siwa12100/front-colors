@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { WorkspaceWebClient } from '../../core/http/web-clients/workspace.web-client';
 import { ImageCardComponent } from '../image-card/image-card';
 import { Photo } from '../../models';
+import { mapPhoto, mapPicture } from '../../mappers/picture.mapper';
 
 @Component({
   selector: 'app-image-gallery',
@@ -21,8 +22,11 @@ export class ImageGallery implements OnInit {
   async ngOnInit() {
     this.loading.set(true);
     try {
-      const result = await this.workspaceClient.getPictures(1); // TODO: workspace id dynamique
-      this.photos.set((result?.data ?? []) as unknown as Photo[]);
+      const workspace_id = localStorage.getItem('workspace_id');
+      const result = await this.workspaceClient.getPictures(Number(workspace_id) ?? 1);
+      this.photos.set((result?.data ?? []).map(mapPhoto));
+      // const mapped = (result?.data ?? []);
+      // this.photos.set(mapped as unknown as Photo[]);
     } catch (err: any) {
       this.error.set(err.message);
     } finally {

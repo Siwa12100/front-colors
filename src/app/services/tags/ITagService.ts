@@ -6,7 +6,7 @@ export interface ITagService {
   getAll(page?: number, perPage?: number): Promise<Page<Tag>>;
 
   /** Creates a new tag */
-  create(name: string, hexCode: string): Promise<Tag>;
+  create(name: string, hex_code: string): Promise<Tag>;
 
   /** Updates an existing tag */
   update(id: number, data: Partial<Tag>): Promise<Tag>;

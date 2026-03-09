@@ -5,10 +5,10 @@ import { mapTag } from '../../mappers/tag.mapper';
 import { mapPagination } from '../../mappers/pagination.mapper';
 import { Tag } from '../../models/tag.model';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class TagService implements ITagService {
 
-  constructor(private readonly client: TagWebClient) {}
+  constructor(private readonly client: TagWebClient) { }
 
   async getAll(page = 1, perPage = 20) {
     const dto = await this.client.getAll(page, perPage);
@@ -16,10 +16,10 @@ export class TagService implements ITagService {
     return mapPagination(dto, mapTag);
   }
 
-  async create(name: string, hexCode: string) {
+  async create(name: string, hex_code: string) {
     const dto = await this.client.create({
       name,
-      hex_code: hexCode,
+      hex_code: hex_code,
     });
 
     if (!dto) {
@@ -36,8 +36,8 @@ export class TagService implements ITagService {
       payload.name = data.name;
     }
 
-    if (data.hexCode !== undefined) {
-      payload.hex_code = data.hexCode;
+    if (data.hex_code !== undefined) {
+      payload.hex_code = data.hex_code;
     }
 
     const dto = await this.client.update(id, payload);

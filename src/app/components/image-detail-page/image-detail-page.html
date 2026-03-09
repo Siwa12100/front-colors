@@ -5,11 +5,46 @@
     <header class="modal-header">
       <div class="photo-title-area">
         <h2 class="photo-name">{{ photo().name }}</h2>
+
         <div class="photo-meta-pills">
-          @for (tag of photo().tags; track tag) {
-          <span class="tag-pill">#{{ tag }}</span>
+          @for (tag of localTags(); track tag.id) {
+          <span class="tag-pill" [style.background-color]="'#' + tag.hex_code + 'AA'" [style.color]="'black'">
+            #{{ tag.name }}
+            <button class="tag-remove" (click)="removeTag(tag)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="black" width="10" height="10">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </span>
           }
+          <button class="btn-add-tag" (click)="toggleAddTag()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="12" height="12">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Ajouter
+          </button>
         </div>
+
+        @if (showAddTag()) {
+        <div class="add-tag-form" style="position: relative">
+          <input type="color" class="tag-color-picker" [value]="newTagColor()"
+            (input)="onTagColorChange($any($event.target).value)" />
+          <div style="position: relative">
+            <input type="text" class="tag-name-input" placeholder="Nom du tag" [value]="newTagName()"
+              (input)="onTagNameChange($any($event.target).value)" />
+            @if (filteredTags().length > 0 && newTagName()) {
+            <div class="tag-suggestions">
+              @for (tag of filteredTags(); track tag) {
+              <div class="tag-suggestion-item" (click)="selectTag(tag)">{{ tag.name }}</div>
+              }
+            </div>
+            }
+          </div>
+          <button class="btn-confirm-tag" (click)="addTag()" [disabled]="!newTagName()">OK</button>
+        </div>
+        }
       </div>
 
       <div class="modal-actions">
@@ -127,9 +162,13 @@
         <div class="tags-section">
           <div class="section-label">Tags</div>
           <div class="tags-list">
-            @for (tag of photo().tags; track tag) {
-            <span class="tag-item">#{{ tag }}</span>
+            @for (tag of photo().tags; track tag.id) {
+            <span class="tag-pill" [style.background-color]="'#' + tag.hex_code + 'CC'"
+              [style.color]="'#' + tag.hex_code">
+              #{{ tag.name }}
+            </span>
             }
+
           </div>
         </div>
         }

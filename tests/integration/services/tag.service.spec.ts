@@ -29,12 +29,12 @@ describe('TagService - Integration', () => {
     console.log('TOTAL BEFORE CLEAN:', page.total);
 
     for (const tag of page.items) {
-        await service.delete(tag.id);
+      await service.delete(tag.id);
     }
 
     const check = await service.getAll(1, 1000);
     console.log('TOTAL AFTER CLEAN:', check.total);
-    });
+  });
 
 
 
@@ -43,7 +43,7 @@ describe('TagService - Integration', () => {
 
     expect(tag.id).toBeDefined();
     expect(tag.name).toBe(TEST_TAG_NAME);
-    expect(tag.hexCode).toBe(TEST_HEX);
+    expect(tag.hex_code).toBe(TEST_HEX);
 
     createdTagId = tag.id;
   });
