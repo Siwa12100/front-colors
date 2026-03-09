@@ -7,8 +7,6 @@
         </svg>
     </button>
 
-    <!-- @if (open()) {
-    <div class="card-menu" (click)="$event.stopPropagation()"> -->
     @if (open()) {
     <div class="card-menu" [style.left.px]="pos()!.x" [style.top.px]="pos()!.y" (click)="$event.stopPropagation()">
         <button class="card-menu-item" (click)="onMoveToFolder()">
