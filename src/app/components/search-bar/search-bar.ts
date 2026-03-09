@@ -1,4 +1,4 @@
-import { Component, computed, signal, inject, HostListener, ElementRef } from '@angular/core';
+import { Component, computed, signal, inject, HostListener, ElementRef, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorkspaceService } from '../../services/workspace-service';
@@ -27,30 +27,36 @@ export class SearchBarComponent {
   onDateFromChange(val: string) { this.dateFrom.set(val); this.applyFilters(); }
   onDateToChange(val: string) { this.dateTo.set(val); this.applyFilters(); }
 
-  selectedTags = signal<string[]>([]);
   selectedMimeTypes = signal<string[]>([]);
   dateFrom = signal<string>('');
   dateTo = signal<string>('');
   sizeMin = signal<string>('');
   sizeMax = signal<string>('');
 
-  allTags = signal<string[]>([]);
+  allTags = signal<{ id: number, name: string }[]>([]);
+  selectedTags = signal<{ id: number, name: string }[]>([]);
 
-  constructor(){
+  ngOnInit() {
+    this.clearAll();
+  }
+
+  constructor() {
     this.loadTags();
   }
-  async loadTags(){
+
+  async loadTags() {
     try {
       const result = await this.tagService.getAll(1, 1000);
-      this.allTags.set(result.items.map((t: any) => t.name));
-    }
-    catch{}
+      this.allTags.set(result.items.map((t: any) => ({ id: t.id, name: t.name })));
+    } catch { }
   }
 
   filteredTagSuggestions = computed(() => {
-    const query = this.searchQuery().slice(1).toLowerCase(); // ne pas prendre en compte le #
+    const query = this.searchQuery().slice(1).toLowerCase();
     if (!query) return this.allTags().slice(0, 8);
-    return this.allTags().filter(t => t.toLowerCase().includes(query) && !this.selectedTags().includes(t)).slice(0, 6);
+    return this.allTags()
+      .filter(t => t.name.toLowerCase().includes(query) && !this.selectedTags().some(s => s.id === t.id))
+      .slice(0, 6);
   });
 
   hasActiveFilters = computed(() =>
@@ -70,27 +76,25 @@ export class SearchBarComponent {
   onQueryChange(query: string) {
     this.searchQuery.set(query);
     this.svc.setSearchQuery(query);
-    if (query == "" || query.startsWith("#")){
+    if (query == "" || query.startsWith("#")) {
       this.showTagSuggestions.set(true);
     }
-    else{
+    else {
       this.showTagSuggestions.set(false);
     }
   }
 
-  selectTag(tag: string) {
-    if (!this.selectedTags().includes(tag)) {
+  selectTag(tag: { id: number, name: string }) {
+    if (!this.selectedTags().some(t => t.id === tag.id)) {
       this.selectedTags.update(t => [...t, tag]);
-      this.applyFilters();
     }
     this.searchQuery.set('');
     this.svc.setSearchQuery('');
     this.showTagSuggestions.set(false);
   }
 
-  removeTag(tag: string) {
-    this.selectedTags.update(t => t.filter(x => x !== tag));
-    this.applyFilters();
+  removeTag(tag: { id: number, name: string }) {
+    this.selectedTags.update(t => t.filter(x => x.id !== tag.id));
   }
 
   toggleMimeType(mime: string) {
@@ -102,7 +106,7 @@ export class SearchBarComponent {
 
   applyFilters() {
     this.svc.setFilters({
-      tags: this.selectedTags(),
+      tags: this.selectedTags().map(t => t.name),
       mimeTypes: this.selectedMimeTypes(),
       dateFrom: this.dateFrom() ? new Date(this.dateFrom()) : undefined,
       dateTo: this.dateTo() ? new Date(this.dateTo()) : undefined,
@@ -125,5 +129,30 @@ export class SearchBarComponent {
       this.showTagSuggestions.set(false);
       this.showFilters.set(false);
     }
+  }
+
+  filtersApplied = output<Record<string, any>>();
+
+  submitFilters() {
+    console.log("Valider filtres")
+    console.log("selectedTags au clic:", this.selectedTags());
+    const params: Record<string, any> = {};
+
+    if (this.searchQuery()) params['name'] = this.searchQuery();
+    if (this.selectedTags().length) params['tags'] = this.selectedTags().map(t => t.id).join(',');
+    console.log("Param : " + params["tags"])
+    if (this.dateFrom()) params['updated_after'] = this.dateFrom();
+    if (this.selectedMimeTypes().length) params['mime_types'] = this.selectedMimeTypes().join(',');
+
+    // Still update local state for client-side filtering
+    this.svc.setFilters({
+      tags: this.selectedTags().map(t => t.name),
+      mimeTypes: this.selectedMimeTypes(),
+      dateFrom: this.dateFrom() ? new Date(this.dateFrom()) : undefined,
+      dateTo: this.dateTo() ? new Date(this.dateTo()) : undefined,
+    });
+
+    this.filtersApplied.emit(params);
+    this.showFilters.set(false);
   }
 }

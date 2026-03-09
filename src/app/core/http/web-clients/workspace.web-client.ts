@@ -8,6 +8,7 @@ import { FolderDto } from '../../../dtos/folder.dto';
 @Injectable({ providedIn: 'root' })
 export class WorkspaceWebClient {
   private readonly route = '/api/workspaces';
+  private readonly pictures_route = '/api/pictures';
 
   constructor(private readonly base: BaseWebClient) { }
 
@@ -43,12 +44,26 @@ export class WorkspaceWebClient {
   async getPictures(
     workspaceId: number,
     page = 1,
-    perPage = 20
+    perPage = 20,
+    filters: Record<string, any> = {},
   ): Promise<PaginationDto<PictureDto> | null> {
-    return this.base.get<PaginationDto<PictureDto>>(
-      `${this.route}/${workspaceId}/pictures`,
-      { params: { page, per_page: perPage } }
-    );
+    const params: Record<string, any> = { page, per_page: perPage };
+
+    // Ajoute les filtres sauf tags
+    Object.entries(filters).forEach(([key, value]) => {
+      if (key !== 'tags' && value !== undefined && value !== null && value !== '') {
+        params[key] = value;
+      }
+    });
+
+    let url = `${this.pictures_route}`;
+
+    // Tags sans encodage de la virgule
+    if (filters['tags']) {
+      url += `?tags=${filters['tags']}`;
+    }
+
+    return this.base.get<PaginationDto<PictureDto>>(url, { params });
   }
 
   async update(
