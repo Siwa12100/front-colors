@@ -3,96 +3,83 @@
   <div class="search-input-wrap">
     <div class="search-field" [class.has-tags]="selectedTags().length > 0">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.35-4.35" />
       </svg>
 
       <div class="tags-row">
-        @for (tag of selectedTags(); track tag) {
-          <span class="tag-chip">
-            #{{ tag }}
-            <button class="tag-remove" (click)="removeTag(tag)">×</button>
-          </span>
+        @for (tag of selectedTags(); track tag.id) {
+        <span class="tag-chip">
+          #{{ tag.name }}
+          <button class="tag-remove" (click)="removeTag(tag)">×</button>
+        </span>
         }
       </div>
 
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Rechercher par tags, nom..."
-        [value]="searchQuery()"
-        (input)="onQueryChange($any($event.target).value)"
-        (focus)="openTagSuggestions()"
-      />
+      <input type="text" class="search-input" placeholder="Rechercher par tags, nom..." [value]="searchQuery()"
+        (input)="onQueryChange($any($event.target).value)" (focus)="openTagSuggestions()" />
 
       @if (hasActiveFilters() || searchQuery()) {
-        <button class="clear-btn" (click)="clearAll()">✕</button>
+      <button class="clear-btn" (click)="clearAll()">✕</button>
       }
     </div>
 
     <!-- Tag suggestions dropdown -->
     @if (showTagSuggestions() && filteredTagSuggestions().length > 0) {
-      <div class="suggestions-dropdown">
-        <div class="suggestions-label">Tags suggérés</div>
-        @for (tag of filteredTagSuggestions(); track tag) {
-          <button class="suggestion-item" (click)="selectTag(tag)">
-            <span class="suggestion-hash">#</span>{{ tag }}
-          </button>
-        }
-      </div>
+    <div class="suggestions-dropdown">
+      <div class="suggestions-label">Tags suggérés</div>
+      @for (tag of filteredTagSuggestions(); track tag.id) {
+      <button class="suggestion-item" (click)="selectTag(tag)">
+        <span class="suggestion-hash">#</span>{{ tag.name }}
+      </button>
+      }
+    </div>
     }
   </div>
 
   <!-- Filters toggle -->
-  <button
-    class="filter-btn"
-    [class.active]="showFilters() || hasActiveFilters()"
-    (click)="toggleFilters()"
-  >
+  <button class="filter-btn" [class.active]="showFilters() || hasActiveFilters()" (click)="toggleFilters()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
     </svg>
     Filtres
     @if (hasActiveFilters()) {
-      <span class="filter-badge">{{ selectedTags().length + selectedMimeTypes().length }}</span>
+    <span class="filter-badge">{{ selectedTags().length + selectedMimeTypes().length }}</span>
     }
   </button>
 
   <!-- Filters panel -->
   @if (showFilters()) {
-    <div class="filters-panel">
-      <div class="filters-grid">
-        <!-- Format -->
-        <div class="filter-group">
-          <div class="filter-group-label">Format</div>
-          @for (opt of mimeTypeOptions; track opt.value) {
-            <label class="checkbox-item">
-              <input
-                type="checkbox"
-                [checked]="selectedMimeTypes().includes(opt.value)"
-                (change)="toggleMimeType(opt.value)"
-              />
-              <span class="checkbox-custom"></span>
-              {{ opt.label }}
-            </label>
-          }
-        </div>
-
-        <!-- Date range -->
-        <div class="filter-group">
-          <div class="filter-group-label">Période</div>
-          <label class="date-label">Depuis</label>
-          <input type="date" class="date-input" [value]="dateFrom()"
-            (change)="onDateFromChange($any($event.target).value)" />
-          <label class="date-label">Jusqu'au</label>
-          <input type="date" class="date-input" [value]="dateTo()"
-            (change)="onDateToChange($any($event.target).value)" />
-        </div>
+  <div class="filters-panel">
+    <div class="filters-grid">
+      <!-- Format -->
+      <div class="filter-group">
+        <div class="filter-group-label">Format</div>
+        @for (opt of mimeTypeOptions; track opt.value) {
+        <label class="checkbox-item">
+          <input type="checkbox" [checked]="selectedMimeTypes().includes(opt.value)"
+            (change)="toggleMimeType(opt.value)" />
+          <span class="checkbox-custom"></span>
+          {{ opt.label }}
+        </label>
+        }
       </div>
 
-      <div class="filters-footer">
-        <button class="btn-reset" (click)="clearAll()">Réinitialiser</button>
-        <button class="btn-apply" (click)="closeFilters()">Appliquer</button>
+      <!-- Date range -->
+      <div class="filter-group">
+        <div class="filter-group-label">Période</div>
+        <label class="date-label">Depuis</label>
+        <input type="date" class="date-input" [value]="dateFrom()"
+          (change)="onDateFromChange($any($event.target).value)" />
+        <label class="date-label">Jusqu'au</label>
+        <input type="date" class="date-input" [value]="dateTo()" (change)="onDateToChange($any($event.target).value)" />
       </div>
     </div>
+
+    <div class="filters-footer">
+      <button class="btn-reset" (click)="clearAll()">Réinitialiser</button>
+      <button (click)="submitFilters(); $event.stopPropagation()">Appliquer</button>
+    </div>
+  </div>
   }
 </div>

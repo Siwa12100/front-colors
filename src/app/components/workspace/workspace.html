@@ -12,7 +12,7 @@
 
     <!-- Search bar centered -->
     <div class="search-wrap">
-      <app-search-bar />
+      <app-search-bar (filtersApplied)="onFiltersApplied($event)" />
     </div>
 
     <div class="top-right">
@@ -94,7 +94,7 @@
       }
 
       <!-- Photos section -->
-      <app-image-gallery (openDetail)="openDetail($event)" />
+      <app-image-gallery [filterParams]="activeFilters()" (openDetail)="openDetail($event)" />
       }
     </main>
 

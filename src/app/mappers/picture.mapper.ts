@@ -25,8 +25,6 @@ export function mapPicture(dto: PictureDto): Picture {
 }
 
 export function mapPhoto(dto: PictureDto): Photo {
-  console.log('dto reçu:', dto);
-  console.log('resolutionX:', dto.resolutionX, typeof dto.resolutionX);
   return {
     id: String(dto.id),
     name: dto.name,

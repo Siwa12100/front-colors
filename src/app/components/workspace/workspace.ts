@@ -46,6 +46,12 @@ export class WorkspaceComponent implements OnInit {
 
   private readonly workspaceId = this.accountService.getWorkspaceId() ?? 1;
 
+  activeFilters = signal<Record<string, any>>({});
+
+  onFiltersApplied(params: Record<string, any>) {
+    this.activeFilters.set(params);
+  }
+
   ngOnInit() {
     this.loadWorkspaces();
     this.loadFolders();
