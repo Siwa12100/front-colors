@@ -6,8 +6,8 @@
     <div class="skeleton"></div>
     }
 
-    <img draggable="false" [src]="photo().thumbnailLink" [alt]="photo().name" class="card-image"
-      [class.loaded]="loaded()" (load)="onImageLoad()" loading="lazy" (error)="onImageError($event)" />
+    <img [src]="imageUrl()" loading="lazy" (load)="onImageLoad()" (error)="onImageError($event)" class="card-image"
+      [class.loaded]="loaded()" />
 
     <!-- Overlay on hover -->
     <div class="card-overlay" [class.visible]="hovered()">
@@ -25,7 +25,7 @@
 
       <div class="overlay-bottom">
         <div class="tags-preview">
-          @for (tag of photo().tags.slice(0, 3); track tag) {
+          @for (tag of photo().tags.slice(0, 3); track tag.id) {
           <span class="mini-tag">#{{ tag.name }}</span>
           }
           @if (photo().tags.length > 3) {
