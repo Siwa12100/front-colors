@@ -5,6 +5,6 @@ export function mapTag(dto: TagDto): Tag {
   return {
     id: dto.id,
     name: dto.name,
-    hexCode: dto.hex_code,
+    hex_code: dto.hex_code,
   };
 }

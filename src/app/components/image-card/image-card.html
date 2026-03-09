@@ -26,7 +26,7 @@
       <div class="overlay-bottom">
         <div class="tags-preview">
           @for (tag of photo().tags.slice(0, 3); track tag) {
-          <span class="mini-tag">#{{ tag }}</span>
+          <span class="mini-tag">#{{ tag.name }}</span>
           }
           @if (photo().tags.length > 3) {
           <span class="mini-tag more">+{{ photo().tags.length - 3 }}</span>

@@ -1,10 +1,12 @@
+import { Tag } from "./tag.model";
+
 export interface Photo {
   id: string;
   name: string;
   url: string;
   downloadLink: string;
   thumbnailLink: string;
-  tags: string[];
+  tags: Tag[];
   size: number; // bytes
   width: number;
   height: number;

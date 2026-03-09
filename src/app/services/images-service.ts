@@ -14,7 +14,7 @@ export interface PaginatedPictures {
 export class ImagesService {
   private accountService = inject(AccountService);
 
-  private readonly apiBaseUrl = environment.apiBaseUrl;
+  private readonly apiBaseUrl = environment.apiBaseUrl + '/api';
   private readonly workspaceId = this.accountService.getWorkspaceId() ?? 1;
 
   private getAuthHeaders(): HeadersInit {

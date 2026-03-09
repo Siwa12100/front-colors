@@ -1,6 +1,10 @@
-import { Component, input, output, signal, computed } from '@angular/core';
+import { Component, input, output, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Photo } from '../../models';
+import { WorkspaceService } from '../../services/workspace-service';
+import { TagService } from '../../services/tags/tag.service';
+import { Tag } from '../../models/tag.model';
+import { ImagesService } from '../../services/images-service';
 
 @Component({
   selector: 'app-image-detail-page',
@@ -14,6 +18,7 @@ import { Photo } from '../../models';
 export class ImageDetailPageComponent {
   photo = input.required<Photo>();
   close = output<void>();
+  svc = inject(WorkspaceService);
 
   zoom = signal(1);
   showTechnicalDetails = signal(false);
@@ -60,6 +65,74 @@ export class ImageDetailPageComponent {
       url: 'API'
     };
     return labels[this.photo().source.type] ?? this.photo().source.type;
+  }
+
+  showAddTag = signal(false);
+  newTagName = signal('');
+  newTagColor = signal('#FF5733');
+
+  toggleAddTag() { this.showAddTag.update(v => !v); }
+  onTagNameChange(val: string) { this.newTagName.set(val); }
+  onTagColorChange(val: string) { this.newTagColor.set(val); }
+
+  imagesService = inject(ImagesService);
+
+  localTags = signal<Tag[]>([]);
+
+  async ngOnInit() {
+    const result = await this.tagService.getAll(1, 1000);
+    this.localTags.set(this.photo().tags);
+    this.allTags.set(result.items);
+  }
+
+  async addTag() {
+    if (!this.newTagName()) return;
+
+    try {
+      let tag = await this.tagService.findByName(this.newTagName());
+      if (!tag) {
+        tag = await this.tagService.create(this.newTagName(), this.newTagColor());
+      }
+
+      const currentTagIds = this.localTags().map(t => t.id);
+      if (currentTagIds.includes(tag.id)) return;
+
+      await this.imagesService.updateImage(Number(this.photo().id), {
+        tags: [...currentTagIds, tag.id] as any,
+      });
+
+      this.localTags.update(tags => [...tags, tag!]);
+      this.newTagName.set('');
+      this.showAddTag.set(false);
+    } catch (err) {
+      console.error('Erreur ajout tag:', err);
+    }
+  }
+
+  async removeTag(tag: Tag) {
+    try {
+      const currentTagIds = this.localTags().filter(t => t.id !== tag.id).map(t => t.id);
+      await this.imagesService.updateImage(Number(this.photo().id), {
+        tags: currentTagIds as any,
+      });
+      this.localTags.update(tags => tags.filter(t => t.id !== tag.id));
+    } catch (err) {
+      console.error('Erreur suppression tag:', err);
+    }
+  }
+
+  tagService = inject(TagService);
+  allTags = signal<Tag[]>([]);
+
+  filteredTags = computed(() => {
+    const query = this.newTagName().toLowerCase();
+    if (!query) return this.allTags();
+    return this.allTags().filter(t => t.name.toLowerCase().includes(query));
+  });
+
+  selectTag(tag: Tag) {
+    this.newTagName.set(tag.name);
+    this.newTagColor.set(tag.hex_code);
   }
 
   mockExif = {
