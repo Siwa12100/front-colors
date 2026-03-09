@@ -25,15 +25,11 @@ export class ImageCardComponent implements OnInit {
   ngOnInit(): void {
     const delay = ImageCardComponent.requestCount++ * ImageCardComponent.DELAY_MS;
     setTimeout(() => {
-      this.imageUrl.set(this.buildImageUrl(this.photo().thumbnailLink));
+      this.imageUrl.set(this.photo().thumbnailLink);
     }, delay);
   }
 
   private buildImageUrl(thumbnailLink: string): string {
-    // Extract file ID if it's a full Google Drive URL, otherwise use as-is
-    // const idMatch = thumbnailLink?.match(/[-\w]{25,}/);
-    // const fileId = idMatch ? idMatch[0] : thumbnailLink;
-    // return `https://lh3.googleusercontent.com/d/${fileId}=s800`;
     return thumbnailLink;
   }
 
