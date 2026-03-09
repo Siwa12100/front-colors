@@ -13,6 +13,8 @@ import { ImageCardMenuComponent } from '../image-card-menu/image-card-menu';
 export class ImageCardComponent {
   photo = input.required<Photo>();
   openDetail = output<Photo>();
+  context = input<'folder' | 'workspace'>('workspace');
+  removeFromContext = output<Photo>();
 
   loaded = signal(false);
   hovered = signal(false);

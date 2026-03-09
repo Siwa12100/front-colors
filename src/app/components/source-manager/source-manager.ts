@@ -66,7 +66,6 @@ export class SourceManagerComponent {
   }
 
   submit() {
-    if (!this.label()) return;
 
     const config: any = this.selectedType() === 'url'
       ? { endpoint: this.apiEndpoint(), apiKey: this.apiKey() }

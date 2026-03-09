@@ -40,6 +40,19 @@ export class FolderService implements IFolderService {
     return mapFolder(dto);
   }
 
+
+  async removePicture(folderId: number, pictureId: number) {
+    const folder = await this.getById(folderId);
+    console.log("folder : " + folder);
+    const currentIds = (folder.pictureIds ?? []).map(Number);
+    const nextIds = currentIds.filter(id => id !== pictureId);
+
+    const dto = await this.client.update(folderId, { pictures: nextIds } as any);
+    if (!dto) throw new Error('Failed to remove picture from folder');
+    return mapFolder(dto);
+  }
+
+
   async update(id: number, data: any) {
     const dto = await this.client.update(id, {
       name: data.name,

@@ -70,6 +70,16 @@ export class FolderComponent {
     }
   }
 
+  async toggleRemoveFolder()
+  {
+    try {
+      await this.folderService.delete(Number(this.folder().id));
+    } catch(err) {
+      console.error('Erreur de suppression du dossier : ', err)
+    }
+  }
+
+
   showRename = signal(false);
   renameName = signal('');
   folderUpdated = output<void>();

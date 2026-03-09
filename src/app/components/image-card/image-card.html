@@ -38,6 +38,7 @@
 
   <div class="card-footer">
     <span class="photo-name" [title]="photo().name">{{ photo().name }}</span>
-    <app-image-card-menu [photo]="photo()" (moveToFolder)="moveToFolder.emit($any($event))" />
+    <app-image-card-menu [photo]="photo()" (moveToFolder)="moveToFolder.emit($any($event))"   (removeFromContext)="removeFromContext.emit($event)"
+/>
   </div>
 </article>

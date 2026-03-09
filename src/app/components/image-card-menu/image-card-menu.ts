@@ -42,6 +42,14 @@ export class ImageCardMenuComponent {
     this.showPicker.set(true);
   }
 
+  context = input<'folder' | 'workspace'>('workspace');
+  removeFromContext = output<Photo>();
+
+  onRemoveFromContext() {
+    this.open.set(false);
+    this.removeFromContext.emit(this.photo());
+  }
+
   private folderService = inject(FolderService);
 
   async onFolderSelected(folder: Folder) {
