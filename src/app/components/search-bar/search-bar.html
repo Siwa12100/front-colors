@@ -44,7 +44,7 @@
     </svg>
     Filtres
     @if (hasActiveFilters()) {
-    <span class="filter-badge">{{ selectedTags().length + selectedMimeTypes().length }}</span>
+    <span class="filter-badge">{{ selectedTags().length + selectedColors().length }}</span>
     }
   </button>
 
@@ -54,11 +54,11 @@
     <div class="filters-grid">
       <!-- Format -->
       <div class="filter-group">
-        <div class="filter-group-label">Format</div>
-        @for (opt of mimeTypeOptions; track opt.value) {
+        <div class="filter-group-label">Colors</div>
+        @for (opt of colorsOptions; track opt.value) {
         <label class="checkbox-item">
-          <input type="checkbox" [checked]="selectedMimeTypes().includes(opt.value)"
-            (change)="toggleMimeType(opt.value)" />
+          <input type="checkbox" [checked]="selectedColors().includes(opt.value)"
+            (change)="toggleColor(opt.value)" />
           <span class="checkbox-custom"></span>
           {{ opt.label }}
         </label>
@@ -78,7 +78,7 @@
 
     <div class="filters-footer">
       <button class="btn-reset" (click)="clearAll()">Réinitialiser</button>
-      <button (click)="submitFilters(); $event.stopPropagation()">Appliquer</button>
+      <button class="btn-reset" (click)="submitFilters(); $event.stopPropagation()">Appliquer</button>
     </div>
   </div>
   }

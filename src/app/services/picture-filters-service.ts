@@ -6,7 +6,7 @@ import { Photo } from '../models';
 export interface PictureFilters {
   name?: string;
   tags?: number[];       // tag IDs
-  mimeTypes?: string[];
+  mainColors?: string[];
   dateFrom?: Date;
   dateTo?: Date;
   page?: number;
@@ -56,8 +56,8 @@ export class PictureFiltersService {
     if (filters.name) params = params.set('name', filters.name);
     if (filters.tags?.length)
       filters.tags.forEach((id: number) => params = params.append('tags', id));
-    if (filters.mimeTypes?.length)
-      filters.mimeTypes.forEach((m: string) => params = params.append('mimeTypes', m));
+    if (filters.mainColors?.length)
+      filters.mainColors.forEach((m: string) => params = params.append('mainColors', m));
     if (filters.dateFrom)
       params = params.set('updated_after', filters.dateFrom.toISOString());
 

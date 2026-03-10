@@ -9,7 +9,7 @@ export class WorkspaceService {
   private _folders = signal<Folder[]>([]);
   private _activeWorkspaceId = signal<string>('ws-1');
   private _searchQuery = signal<string>('');
-  private _filters = signal<SearchFilters>({ tags: [], mimeTypes: [], sources: [] });
+  private _filters = signal<SearchFilters>({ tags: [], mainColors: [], sources: [] });
 
 
   readonly workspaces = this._workspaces.asReadonly();
@@ -42,8 +42,8 @@ export class WorkspaceService {
         return filters.tags.every(t => p.tags.some(pt => pt.name === t));
       })
       .filter(p => {
-        if (filters.mimeTypes.length === 0) return true;
-        return filters.mimeTypes.includes(p.mimeType);
+        if (filters.mainColors.length === 0) return true;
+        return filters.mainColors.some(color => p.mainColors.includes(color));
       })
       .filter(p => {
         if (!filters.dateFrom) return true;
@@ -78,7 +78,7 @@ export class WorkspaceService {
   setActiveWorkspace(id: string) {
     this._activeWorkspaceId.set(id);
     this._searchQuery.set('');
-    this._filters.set({ tags: [], mimeTypes: [], sources: [] });
+    this._filters.set({ tags: [], mainColors: [], sources: [] });
   }
 
   setSearchQuery(query: string) {
