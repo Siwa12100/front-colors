@@ -27,7 +27,7 @@ export class SearchBarComponent {
   onDateFromChange(val: string) { this.dateFrom.set(val); this.applyFilters(); }
   onDateToChange(val: string) { this.dateTo.set(val); this.applyFilters(); }
 
-  selectedMimeTypes = signal<string[]>([]);
+  selectedColors= signal<string[]>([]);
   dateFrom = signal<string>('');
   dateTo = signal<string>('');
   sizeMin = signal<string>('');
@@ -61,16 +61,22 @@ export class SearchBarComponent {
 
   hasActiveFilters = computed(() =>
     this.selectedTags().length > 0 ||
-    this.selectedMimeTypes().length > 0 ||
+    this.selectedColors().length > 0 ||
     !!this.dateFrom() || !!this.dateTo()
   );
 
-  mimeTypeOptions = [
-    { value: 'image/jpeg', label: 'JPEG' },
-    { value: 'image/png', label: 'PNG' },
-    { value: 'image/gif', label: 'GIF' },
-    { value: 'image/webp', label: 'WebP' },
-    { value: 'image/svg+xml', label: 'SVG' },
+  colorsOptions = [
+    { value: 'red', label: 'rouge' },
+    { value: 'orange', label: 'orange' },
+    { value: 'yellow', label: 'jaune' },
+    { value: 'green', label: 'vert' },
+    { value: 'cyan', label: 'cyan' },
+    { value: 'blue', label: 'bleu' },
+    { value: 'purple', label: 'violet' },
+    { value: 'pink', label: 'rose' },
+    { value: 'white', label: 'blanc' },
+    { value: 'grey', label: 'gris' },
+    { value: 'black', label: 'noir' },
   ];
 
   onQueryChange(query: string) {
@@ -97,9 +103,9 @@ export class SearchBarComponent {
     this.selectedTags.update(t => t.filter(x => x.id !== tag.id));
   }
 
-  toggleMimeType(mime: string) {
-    this.selectedMimeTypes.update(types =>
-      types.includes(mime) ? types.filter(t => t !== mime) : [...types, mime]
+  toggleColor(color: string) {
+    this.selectedColors.update(types =>
+      types.includes(color) ? types.filter(t => t !== color) : [...types, color]
     );
     this.applyFilters();
   }
@@ -107,7 +113,7 @@ export class SearchBarComponent {
   applyFilters() {
     this.svc.setFilters({
       tags: this.selectedTags().map(t => t.name),
-      mimeTypes: this.selectedMimeTypes(),
+      mainColors: this.selectedColors(),
       dateFrom: this.dateFrom() ? new Date(this.dateFrom()) : undefined,
       dateTo: this.dateTo() ? new Date(this.dateTo()) : undefined,
     });
@@ -115,12 +121,12 @@ export class SearchBarComponent {
 
   clearAll() {
     this.selectedTags.set([]);
-    this.selectedMimeTypes.set([]);
+    this.selectedColors.set([]);
     this.dateFrom.set('');
     this.dateTo.set('');
     this.searchQuery.set('');
     this.svc.setSearchQuery('');
-    this.svc.setFilters({ tags: [], mimeTypes: [], sources: [] });
+    this.svc.setFilters({ tags: [], mainColors: [], sources: [] });
   }
 
   @HostListener('document:click', ['$event'])
@@ -142,12 +148,12 @@ export class SearchBarComponent {
     if (this.selectedTags().length) params['tags'] = this.selectedTags().map(t => t.id).join(',');
     console.log("Param : " + params["tags"])
     if (this.dateFrom()) params['updated_after'] = this.dateFrom();
-    if (this.selectedMimeTypes().length) params['mime_types'] = this.selectedMimeTypes().join(',');
+    if (this.selectedColors().length) params['mainColors'] = this.selectedColors().join(',');
 
     // Still update local state for client-side filtering
     this.svc.setFilters({
       tags: this.selectedTags().map(t => t.name),
-      mimeTypes: this.selectedMimeTypes(),
+      mainColors: this.selectedColors(),
       dateFrom: this.dateFrom() ? new Date(this.dateFrom()) : undefined,
       dateTo: this.dateTo() ? new Date(this.dateTo()) : undefined,
     });

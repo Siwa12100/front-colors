@@ -38,7 +38,7 @@ export function mapPhoto(dto: PictureDto): Photo {
     size: dto.resolutionX * dto.resolutionY,
     width: dto.resolutionX ?? 50,
     height: dto.resolutionY,
-    mimeType: dto.name.split('.').pop() ?? 'unknown',
+    mainColors: dto.mainColors,
     //contrast: dto.contrast,
     //luminosity: dto.luminosity,
 

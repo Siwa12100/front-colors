@@ -10,7 +10,7 @@ export interface Photo {
   size: number; // bytes
   width: number;
   height: number;
-  mimeType: string;
+  mainColors: string[];
   createdAt: Date;
   modifiedAt: Date;
   source: PhotoSource;
@@ -73,7 +73,7 @@ export interface SearchFilters {
   dateTo?: Date;
   minWidth?: number;
   minHeight?: number;
-  mimeTypes: string[];
+  mainColors: string[];
   sources: string[];
   sizeMin?: number;
   sizeMax?: number;
