@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { WorkspaceService } from '../../services/workspace-service';
 import { SourceManagerComponent } from '../source-manager/source-manager';
 import { PhotoSource, Workspace } from '../../models';
+import { PictureService } from '../../services/pictures/picture.service';
 
 @Component({
   selector: 'app-workspace-sidebar',
@@ -24,6 +25,8 @@ export class WorkspaceSidebarComponent {
   onWsNameChange(val: string) { this.newWsName.set(val); }
   onWsDescChange(val: string) { this.newWsDesc.set(val); }
   cancelCreateWs() { this.showCreateWs.set(false); }
+
+
 
   createWorkspace() {
     if (!this.newWsName()) return;
