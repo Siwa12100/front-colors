@@ -13,6 +13,9 @@ import { FolderService } from '../../services/folders/folder.service';
 import { AccountService } from '../../services/account-service';
 import { WorkspaceService as WorkspaceStateService } from '../../services/workspace-service';
 import { WorkspaceService } from '../../services/workspaces/workspace.service';
+import { PictureService } from '../../services/pictures/picture.service';
+import { IPictureService } from '../../services/pictures/IPictureService';
+import { PICTURE_SERVICE } from '../../core/di-tokens/picture.token';
 
 
 @Component({
@@ -37,6 +40,7 @@ export class WorkspaceComponent implements OnInit {
   private accountService = inject(AccountService);
   private folderService = inject(FolderService);
   private workspaceClient = inject(WorkspaceWebClient);
+  private pictureService = inject(PICTURE_SERVICE) as IPictureService;
 
   selectedPhoto = signal<Photo | null>(null);
   showCreateFolder = signal(false);
@@ -47,6 +51,10 @@ export class WorkspaceComponent implements OnInit {
   private readonly workspaceId = this.accountService.getWorkspaceId() ?? 1;
 
   activeFilters = signal<Record<string, any>>({});
+
+  syncWorkspace() {
+    this.pictureService.uploadFromDrive();
+  }
 
   onFiltersApplied(params: Record<string, any>) {
     this.activeFilters.set(params);

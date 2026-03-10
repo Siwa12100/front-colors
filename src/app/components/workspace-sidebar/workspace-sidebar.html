@@ -2,88 +2,77 @@
   <div class="sidebar-header">
     <h3 class="sidebar-title">Espaces de travail</h3>
     <button class="btn-new-ws" (click)="toggleCreateWs()" title="Nouvel espace">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
     </button>
   </div>
 
   <!-- Create workspace form -->
   @if (showCreateWs()) {
-    <div class="create-ws-form">
-      <input
-        class="ws-input"
-        type="text"
-        placeholder="Nom de l'espace"
-        [value]="newWsName()"
-        (input)="onWsNameChange($any($event.target).value)"
-      />
-      <input
-        class="ws-input"
-        type="text"
-        placeholder="Description (optionnel)"
-        [value]="newWsDesc()"
-        (input)="onWsDescChange($any($event.target).value)"
-      />
-      <div class="form-row">
-        <button class="btn-cancel" (click)="cancelCreateWs()">Annuler</button>
-        <button class="btn-create" (click)="createWorkspace()" [disabled]="!newWsName()">Créer</button>
-      </div>
+  <div class="create-ws-form">
+    <input class="ws-input" type="text" placeholder="Nom de l'espace" [value]="newWsName()"
+      (input)="onWsNameChange($any($event.target).value)" />
+    <input class="ws-input" type="text" placeholder="Description (optionnel)" [value]="newWsDesc()"
+      (input)="onWsDescChange($any($event.target).value)" />
+    <div class="form-row">
+      <button class="btn-cancel" (click)="cancelCreateWs()">Annuler</button>
+      <button class="btn-create" (click)="createWorkspace()" [disabled]="!newWsName()">Créer</button>
     </div>
+  </div>
   }
 
   <!-- Workspaces list -->
   <div class="workspaces-list">
     @for (ws of svc.workspaces(); track ws.id) {
-      <div class="ws-item-wrap">
-        <div
-          class="ws-item"
-          [class.active]="svc.activeWorkspaceId() === ws.id"
-          (click)="svc.setActiveWorkspace(ws.id)"
-        >
-          <!-- Cover thumbnail -->
-          <div class="ws-thumb">
-            @if (ws.coverPhotoUrl) {
-              <img [src]="ws.coverPhotoUrl" [alt]="ws.name" />
-            } @else {
-              <div class="ws-thumb-placeholder">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              </div>
-            }
+    <div class="ws-item-wrap">
+      <div class="ws-item" [class.active]="svc.activeWorkspaceId() === ws.id" (click)="svc.setActiveWorkspace(ws.id)">
+        <!-- Cover thumbnail -->
+        <div class="ws-thumb">
+          @if (ws.coverPhotoUrl) {
+          <img [src]="ws.coverPhotoUrl" [alt]="ws.name" />
+          } @else {
+          <div class="ws-thumb-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
           </div>
-
-          <div class="ws-info">
-            <div class="ws-name">{{ ws.name }}</div>
-            @if (ws.description) {
-              <div class="ws-desc">{{ ws.description }}</div>
-            }
-            <div class="ws-stats">
-              <span>{{ ws.photoIds.length }} photos</span>
-              <span>·</span>
-              <span>{{ ws.sources.length }} source{{ ws.sources.length > 1 ? 's' : '' }}</span>
-            </div>
-          </div>
-
-          <!-- Sources toggle button -->
-          <button
-            class="btn-sources-toggle"
-            [class.active]="expandedSourceWs() === ws.id"
-            (click)="toggleSources(ws.id, $event)"
-            title="Gérer les sources"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          </button>
+          }
         </div>
 
-        <!-- Source manager panel -->
-        @if (expandedSourceWs() === ws.id) {
-          <div class="source-panel">
-            <app-source-manager
-              [workspace]="ws"
-              (addSource)="addSource(ws.id, $event)"
-              (removeSource)="removeSource(ws.id, $event)"
-            />
+        <div class="ws-info">
+          <div class="ws-name">{{ ws.name }}</div>
+          @if (ws.description) {
+          <div class="ws-desc">{{ ws.description }}</div>
+          }
+          <div class="ws-stats">
+            <span>16 photos</span>
+            <span>·</span>
+            <span>1 source</span>
           </div>
-        }
+        </div>
+
+        <!-- Sources toggle button -->
+        <button class="btn-sources-toggle" [class.active]="expandedSourceWs() === ws.id"
+          (click)="toggleSources(ws.id, $event)" title="Gérer les sources">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+          </svg>
+        </button>
       </div>
+
+      <!-- Source manager panel -->
+      @if (expandedSourceWs() === ws.id) {
+      <div class="source-panel">
+        <app-source-manager [workspace]="ws" (addSource)="addSource(ws.id, $event)"
+          (removeSource)="removeSource(ws.id, $event)" />
+      </div>
+      }
+    </div>
     }
   </div>
 </aside>
